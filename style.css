@@ -1,0 +1,171 @@
+:root {
+    --ana-renk: #1a1a1a;
+    --vurgu-renk: #007aff; /* Apple Mavisi */
+    --arka-plan: #f5f5f7;
+    --kart-golge: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: var(--arka-plan);
+    margin: 0;
+    color: var(--ana-renk);
+}
+
+@keyframes süzülerekGel {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.logo {
+    width: 180px;
+    height: auto;
+    border-radius: 12px;
+    background: white;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3rem;
+    margin: 10px 0;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    max-width: 1200px;
+    margin: 40px auto; 
+    gap: 30px;
+    align-items: start;
+}
+
+.sidebar-widget {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* --- YENİ HABER KARTI TASARIMI (İSTEDİĞİN KISIM) --- */
+.news-card {
+    animation: süzülerekGel 0.6s ease-out forwards;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    box-shadow: var(--kart-golge);
+    display: flex; /* İçeriği yan yana dizer */
+}
+
+/* Sol Taraf: Haber İçeriği ve Resmi */
+.news-main-content {
+    flex: 1; /* Kalan tüm alanı kapla */
+    padding: 25px;
+}
+
+.news-main-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    object-fit: cover;
+}
+
+/* Sağ Taraf: Yazar Kartı */
+.author-sidebar {
+    width: 150px; /* Sabit genişlik */
+    background: #f9f9fb;
+    padding: 25px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-left: 1px solid #eee;
+}
+
+/* Yuvarlak Yazar Fotoğrafı */
+.author-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; /* Tam yuvarlak */
+    object-fit: cover;
+    border: 3px solid white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+}
+
+.author-name {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+.badge {
+    background: var(--vurgu-renk);
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 15px;
+}
+
+/* Genel Buton Tasarımı */
+.dosya-yukle-btn {
+    background: #e1e1e6;
+    color: #333;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    display: inline-block;
+}
+
+button {
+    background: var(--vurgu-renk);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+button:active { transform: scale(0.95); }
+.yorum-bolumu { margin-top: 20px; background: #fdfdfd; padding: 15px; border-radius: 12px; }
+.yorum-satiri { 
+    display: flex; justify-content: space-between; align-items: center;
+    background: white; padding: 8px 12px; border-radius: 8px; 
+    margin-bottom: 8px; border: 1px solid #eee; font-size: 13px;
+}
+.yorum-sil-btn { background: #ffefef; color: #ff3b30; padding: 3px 8px; font-size: 10px; border: 1px solid #ff3b30; }
+.yorum-input-grubu { display: flex; gap: 10px; margin-top: 15px; }
+.yorum-input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ddd; }
+.yorum-gonder-btn { background: #34c759; color: white; padding: 0 15px; font-size: 12px; }
+.admin-sil-btn { background: #ff3b30; color: white; padding: 8px; width: 100%; border-radius: 8px; font-size: 11px; margin-top: 10px; }
+.author-title {
+    font-size: 11px;
+    color: #007aff; /* Apple Mavisi unvan */
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+}
+
+.author-name {
+    font-weight: bold;
+    font-size: 15px;
+    color: #1a1a1a;
+    margin-top: 5px;
+}
