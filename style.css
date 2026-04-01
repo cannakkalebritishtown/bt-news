@@ -82,39 +82,42 @@ body {
 #en-cok-okunanlar { list-style: none; padding: 0; }
 #en-cok-okunanlar li { padding: 10px 0; font-size: 14px; border-bottom: 1px solid #eee; color: #555; }
 
-/* 6. HABER VE YAZAR GRUBU (OTOMATİK YAN YANA) */
+/* 1. HABER GRUBU DÜZENİ (Hizalamayı Sabitler) */
 .haber-grup {
     display: flex;
     align-items: flex-start;
-    gap: 20px;
-    margin-bottom: 45px;
+    gap: 25px;
+    margin-bottom: 50px;
+    width: 100%;
 }
 
+/* 2. HABER KARTI (Sol Taraf) */
 .news-card {
-    flex: 1;
+    flex: 1; /* Haberin geniş alan kaplamasını sağlar */
     background: white;
     padding: 25px;
     border-radius: 20px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    position: relative;
+    display: flex;
+    flex-direction: column; /* İçeriklerin (başlık, resim, yorum) alt alta gelmesini sağlar */
 }
-
+/* 5. RESİMLERİN TAŞMASINI ÖNLE */
 .news-card img {
-    width: 100%;
+    max-width: 100%;
+    height: auto;
     border-radius: 12px;
-    margin: 15px 0;
-    object-fit: cover;
 }
 
-/* SABİT YAZAR PANELI */
+/* 3. YAZAR PANELİ (Sağ Taraf - Sabit Durmalı) */
 .kart-yazar-paneli {
-    width: 180px;
+    width: 200px; /* Genişliği sabitledik ki kaymasın */
+    min-width: 200px;
     background: white;
     padding: 20px;
     border-radius: 18px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     text-align: center;
-    border-top: 6px solid #1a4a8e; /* Üst Mavi Şerit */
+    border-top: 6px solid #1a4a8e;
 }
 
 .kart-yazar-paneli img {
@@ -155,47 +158,33 @@ body {
     .haber-grup { flex-direction: column; }
     .kart-yazar-paneli { width: 100%; }
 }
-/* YORUM ALANI */
-.yorum-konteyner {
-    margin-top: 20px;
+/* 4. YORUM BÖLÜMÜ (Haberin Altında Düzgün Durması İçin) */
+.yorum-bolumu {
+    margin-top: 25px;
     padding-top: 15px;
     border-top: 1px solid #eee;
-}
-
-.yorum-liste {
-    list-style: none;
-    padding: 0;
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-.tek-yorum {
-    background: #f8f9fa;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    font-size: 13px;
-    border-left: 4px solid #d32f2f; /* Kırmızı şerit */
+    width: 100%; /* Kartın tamamına yayıl */
 }
 
 .yorum-formu {
     display: flex;
     gap: 10px;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .yorum-formu input {
-    flex: 1;
-    padding: 8px;
+    flex: 2; /* Yazı kutusu daha geniş olsun */
+    padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: 8px;
 }
 
 .yorum-formu button {
-    background: #1a4a8e; /* Mavi buton */
+    flex: 0.5; /* Gönder butonu daha küçük kalsın */
+    background: #1a4a8e;
     color: white;
     border: none;
-    padding: 8px 15px;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: bold;
 }
