@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="main-header">
-        <div class="logo-container"><img src="okul-logo-png.jpeg" alt="Logo" class="logo"></div>
+    <header class="main-header" style="background-color: #1a4a8e; color: white; text-align: center; padding: 20px;">
+        <div class="logo-container">
+            <img src="okul-logo-png.jpeg" alt="Logo" class="logo" style="max-width: 150px; border-radius: 10px;">
+        </div>
         <h1>Genç Yazarlar Haber Merkezi</h1>
         <p>Geleceğin gazetecileri burada yetişiyor!</p>
     </header>
@@ -26,19 +28,21 @@
                 <div id="tarih-saat"></div>
                 <p>☁️ Parçalı Bulutlu, 16°C</p>
             </div>
-            <div id="en-cok-okunanlar" class="sidebar-widget">
+            
+            <div class="sidebar-widget">
                 <h3>🔥 En Çok Okunanlar</h3>
                 <ul id="populer-liste"></ul>
             </div>
-          <div id="admin-panel" class="sidebar-widget">
-    <div id="admin-giris" style="display: flex; flex-direction: column; gap: 10px;">
-        <input type="password" id="admin-sifre" placeholder="Şifre" style="margin: 0;">
-        <button onclick="paneliAc()" style="width: 100%; padding: 10px;">Yönetici Girişi</button>
-    </div>
-    </div>
+
+            <div id="admin-panel" class="sidebar-widget">
+                <div id="admin-giris">
+                    <input type="password" id="admin-sifre" placeholder="Şifre">
+                    <button onclick="paneliAc()">Yönetici Girişi</button>
+                </div>
                 <div id="haber-editoru" style="display:none;">
+                    <h3>Yeni Haber Yayınla</h3>
                     <form id="haber-formu">
-                        <input type="text" id="h-baslik" placeholder="Başlık" required>
+                        <input type="text" id="h-baslik" placeholder="Haber Başlığı" required>
                         <input type="text" id="h-yazar" placeholder="Yazar Adı" required>
                         <select id="h-kategori">
                             <option value="Gündem">Gündem</option>
@@ -49,24 +53,16 @@
                         <input type="file" id="h-resim" accept="image/*" required>
                         <label>Yazar Resmi:</label>
                         <input type="file" id="h-yazar-resim" accept="image/*">
-                        <textarea id="h-icerik" placeholder="İçerik..." required></textarea>
-                        <button type="submit">Hemen Yayınla</button>
-                        <button type="button" onclick="paneliKapat()" style="background:#e74c3c;">Çıkış</button>
+                        <textarea id="h-icerik" placeholder="Haber içeriği..." required></textarea>
+                        <button type="submit" style="background: #28a745; color: white; cursor: pointer;">Hemen Yayınla</button>
                     </form>
+                    <button onclick="location.reload()" style="background:#d32f2f; color:white; margin-top:10px;">Çıkış Yap</button>
                 </div>
             </div>
         </aside>
 
-        <main class="news-feed" id="haber-listesi">
-            <h2>Son Haberler</h2>
-        </main>
-
-        <aside class="sidebar" id="yazar-detay">
-            <div class="sidebar-widget" id="aktif-yazar">
-                <h3>✍️ Yazar Hakkında</h3>
-                <p>Haber seçildiğinde yazar burada görünür.</p>
-            </div>
-        </aside>
+        <main class="news-feed" id="haber-listesi" style="flex: 1;">
+            </main>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
