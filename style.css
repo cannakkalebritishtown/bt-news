@@ -5,6 +5,11 @@ body {
     background-color: #f4f7f6;
     color: #333;
 }
+/* LOGO BÜYÜTME */
+.logo {
+    max-width: 250px !important; /* Logonu burada daha da büyütebilirsin */
+    height: auto;
+    margin-bottom: 15px;
 
 /* MAVİ ÜST BAŞLIK */
 .main-header {
@@ -42,12 +47,12 @@ body {
     color: #d32f2f;
 }
 
-/* ANA KONTEYNER (2 SÜTUNLU DÜZEN) */
+/* ANA KONTEYNER (3 SÜTUNLU DÜZEN) */
 .container {
     display: grid;
-    grid-template-columns: 300px 1fr; /* Sol panel sabit, sağ taraf haber akışı */
-    gap: 25px;
-    max-width: 1200px;
+    grid-template-columns: 280px 1fr 280px; /* Sol, Orta, Sağ */
+    gap: 20px;
+    max-width: 1400px;
     margin: 20px auto;
     padding: 0 20px;
 }
@@ -83,22 +88,24 @@ body {
     margin: 15px 0;
 }
 
-/* YAZAR BİLGİSİ (HABERİN ALTINDAKİ KUTU) */
-.yazar-kutu {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    border-top: 1px solid #eee;
-    padding-top: 15px;
-    margin-top: 15px;
+/* YAZAR BİLGİSİ (SAĞ PANEL KARTI) */
+.yazar-detay-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    text-align: center;
+    position: sticky;
+    top: 80px; /* Sayfa kaydıkça yazar seni takip eder */
 }
 
-.yazar-kutu img {
-    width: 50px !important;
-    height: 50px !important;
-    border-radius: 50% !important;
-    margin: 0 !important;
-    border: 2px solid #1a4a8e;
+.yazar-detay-panel img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #1a4a8e;
+    margin-bottom: 10px;
 }
 
 /* MOBİL UYUMLULUK */
