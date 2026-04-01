@@ -1,202 +1,76 @@
-/* 1. GENEL TASARIM */
-body {
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    background-color: #f4f7f6;
-    color: #333;
-}
+/* GENEL AYARLAR */
+body { font-family: 'Inter', sans-serif; margin: 0; background-color: #f4f7f6; }
 
-/* 2. HEADER & OVAL LOGO */
-.main-header {
-    background-color: #1a4a8e !important; /* Kurumsal Mavi */
-    color: white;
-    text-align: center;
-    padding: 40px 20px;
-}
+/* HEADER & LOGO */
+.main-header { background-color: #1a4a8e; color: white; text-align: center; padding: 30px; }
+.ana-logo { max-width: 280px; border-radius: 50px; background: white; padding: 10px; margin-bottom: 10px; }
 
-.ana-logo {
-    max-width: 300px !important;
-    height: auto;
-    border-radius: 60px; /* Estetik Oval Görünüm */
-    padding: 12px;
-    background: white;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    margin-bottom: 15px;
-    display: inline-block;
-}
+/* KATEGORİ MENÜSÜ */
+.category-nav { background-color: #d32f2f; display: flex; justify-content: center; padding: 10px; gap: 15px; position: sticky; top: 0; z-index: 1000; }
+.category-nav button { background: white; border: none; color: #d32f2f; padding: 8px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
 
-/* 3. KIRMIZI KATEGORİ MENÜSÜ */
-.category-nav {
-    background-color: #d32f2f !important;
+/* ANA DİZİLİM (KİLİT NOKTA) */
+.container {
     display: flex;
     justify-content: center;
-    padding: 12px 0;
-    gap: 15px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.category-nav button {
-    background: white;
-    border: none;
-    color: #d32f2f;
-    padding: 8px 25px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.category-nav button:hover {
-    background: #f0f0f0;
-    transform: scale(1.05);
-}
-
-/* 4. ANA KONTEYNER DÜZENİ - DÜZELTİLDİ */
-.container {
-    display: flex; /* Grid yerine Flex ile daha dengeli yayılım sağlandı */
-    justify-content: center;
-    gap: 25px;
-    max-width: 1550px; /* Ekranı biraz genişlettik */
-    margin: 30px auto;
+    align-items: flex-start;
+    max-width: 1400px;
+    margin: 20px auto;
     padding: 0 20px;
+    gap: 20px;
 }
 
-/* 5. SOL PANEL (SIDEBAR) BİLEŞENLERİ - DÜZELTİLDİ */
+/* SOL PANEL - SABİT */
 .sidebar {
-    width: 280px; /* Sol panel genişliği sabitlendi */
-    flex-shrink: 0;
+    width: 280px;
+    flex-shrink: 0; /* Asla küçülme */
 }
 
-.sidebar-widget {
+/* HABER AKIŞI - GENİŞLEYEN */
+.news-feed {
+    flex-grow: 1; /* Kalan tüm boşluğu kapla */
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* HABER GRUBU (YAZAR VE KART YAN YANA) */
+.haber-grup {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+/* HABER KARTI */
+.news-card {
+    flex: 1; /* Haberi en geniş yap */
     background: white;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    margin-bottom: 25px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.sidebar-widget h4 {
-    color: #1a4a8e;
-    border-bottom: 2px solid #d32f2f;
-    padding-bottom: 8px;
-    margin-bottom: 15px;
-}
+.news-card img { width: 100%; border-radius: 10px; margin: 15px 0; }
 
-#en-cok-okunanlar { list-style: none; padding: 0; }
-#en-cok-okunanlar li { padding: 10px 0; font-size: 14px; border-bottom: 1px solid #eee; color: #555; }
-
-/* HABER AKIŞI ALANI - DÜZELTİLDİ */
-.news-feed {
-    flex-grow: 1; /* Orta alanın büyümesini sağlar */
-    max-width: 900px;
-}
-
-/* 1. HABER GRUBU DÜZENİ (Hizalamayı Sabitler) */
-.haber-grup {
-    display: flex;
-    align-items: flex-start;
-    gap: 25px;
-    margin-bottom: 50px;
-    width: 100%;
-}
-
-/* 2. HABER KARTI (Sol Taraf) */
-.news-card {
-    flex: 1; /* Haberin geniş alan kaplamasını sağlar */
-    background: white;
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    display: flex;
-    flex-direction: column; /* İçeriklerin (başlık, resim, yorum) alt alta gelmesini sağlar */
-}
-/* 5. RESİMLERİN TAŞMASINI ÖNLE */
-.news-card img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 12px;
-}
-
-/* 3. YAZAR PANELİ (Sağ Taraf - Sabit Durmalı) */
+/* SAĞDAKİ YAZAR PANELİ - SABİT */
 .kart-yazar-paneli {
-    width: 200px; /* Genişliği sabitledik ki kaymasın */
-    min-width: 200px;
-    flex-shrink: 0;
+    width: 180px;
+    flex-shrink: 0; /* Asla küçülme */
     background: white;
     padding: 20px;
-    border-radius: 18px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    border-radius: 15px;
     text-align: center;
-    border-top: 6px solid #1a4a8e;
+    border-top: 5px solid #1a4a8e;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-.kart-yazar-paneli img {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #1a4a8e;
-    margin-bottom: 12px;
-}
+.kart-yazar-paneli img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #1a4a8e; object-fit: cover; }
 
-/* 7. ADMİN FORMU VE BUTONLAR */
-#admin-giris input, #haber-formu input, #haber-formu select, #haber-formu textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-sizing: border-box;
-}
+/* YORUM BÖLÜMÜ */
+.yorum-bolumu { margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px; }
+.yorum-formu { display: flex; gap: 5px; margin-top: 10px; }
+.yorum-formu input { flex: 1; padding: 8px; border-radius: 5px; border: 1px solid #ddd; }
+.yorum-formu button { background: #1a4a8e; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
 
-.delete-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #d32f2f;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-/* 8. MOBİL UYUMLULUK */
-@media (max-width: 1100px) {
-    .container { flex-direction: column; align-items: center; }
-    .sidebar, .news-feed, .kart-yazar-paneli { width: 100%; }
-    .haber-grup { flex-direction: column; }
-}
-/* 4. YORUM BÖLÜMÜ (Haberin Altında Düzgün Durması İçin) */
-.yorum-bolumu {
-    margin-top: 25px;
-    padding-top: 15px;
-    border-top: 1px solid #eee;
-    width: 100%; /* Kartın tamamına yayıl */
-}
-
-.yorum-formu {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.yorum-formu input {
-    flex: 2; /* Yazı kutusu daha geniş olsun */
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-}
-
-.yorum-formu button {
-    flex: 0.5; /* Gönder butonu daha küçük kalsın */
-    background: #1a4a8e;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-}
+/* WIDGETLAR */
+.sidebar-widget { background: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
