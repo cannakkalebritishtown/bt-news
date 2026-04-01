@@ -5,63 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Genç Yazarlar Haber Merkezi</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header>
-        <img src="okul-logo-png.jpeg" alt="Okul Logosu" class="logo">
+    <header class="main-header">
+        <div class="logo-container">
+            <img src="okul-logo-png.jpeg" alt="Okul Logosu" class="logo">
+        </div>
         <h1>Genç Yazarlar Haber Merkezi</h1>
         <p>Geleceğin gazetecileri burada yetişiyor!</p>
     </header>
 
     <div class="container">
         <aside class="sidebar">
-            
             <div class="sidebar-widget">
-                <div id="tarih-saat" style="font-weight: bold; margin-bottom: 5px;"></div>
-                <div id="hava-durumu">☁️ Parçalı Bulutlu, 16°C</div>
+                <div id="tarih-saat" style="font-weight: bold; margin-bottom: 10px;"></div>
+                <div class="weather-widget">
+                    <span>☁️ Parçalı Bulutlu, 16°C</span>
+                </div>
             </div>
 
-            <div class="sidebar-widget">
-                <h3>🔥 En Çok Okunanlar</h3>
-                <ul id="populer-haberler" style="list-style: none; padding: 0; font-size: 14px;">
-                    </ul>
+            <div id="admin-giris" class="sidebar-widget">
+                <h3>Yönetici Girişi</h3>
+                <input type="password" id="admin-sifre" placeholder="Şifre" class="admin-input">
+                <button onclick="paneliAc()" class="admin-btn">Giriş Yap</button>
             </div>
 
-            <div class="sidebar-widget">
-                <div id="admin-giris">
-                    <h3>Yönetici Girişi</h3>
-                    <input type="password" id="admin-sifre" placeholder="Şifreyi Girin">
-<button onclick="paneliAc()">Giriş Yap</button>
-                </div>
+            <div id="haber-editoru" class="sidebar-widget" style="display: none;">
+                <h3>Yeni Haber Yaz</h3>
+                <form id="haber-formu">
+                    <input type="text" id="h-baslik" placeholder="Haber Başlığı" required>
+                    <input type="text" id="h-yazar" placeholder="Yazar Adı" required>
+                    
+                    <label for="h-yazar-resim" class="dosya-yukle-btn">👤 Yazar Fotoğrafı Seç</label>
+                    <input type="file" id="h-yazar-resim" accept="image/*" style="display: none;">
 
-                <div id="haber-editoru" style="display: none;">
-                    <h3>Yeni Haber Yayınla</h3>
-                 <form id="haber-formu">
-    <input type="text" id="h-baslik" placeholder="Haber Başlığı" required>
-    
-    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-        <input type="text" id="h-yazar" placeholder="Yazar Adı" required style="width: 60%;">
-        <label for="h-yazar-resim" class="dosya-yukle-btn">👤 Yazar Fotoğrafı</label>
-        <input type="file" id="h-yazar-resim" accept="image/*" style="display: none;">
-    </div>
+                    <select id="h-kategori">
+                        <option value="Gündem">Gündem</option>
+                        <option value="Spor">Spor</option>
+                        <option value="Sanat">Sanat</option>
+                        <option value="Teknoloji">Teknoloji</option>
+                    </select>
 
-    <select id="h-kategori">
-        <option value="Gündem">Gündem</option>
-        <option value="Spor">Spor</option>
-        <option value="Sanat">Sanat</option>
-        <option value="Teknoloji">Teknoloji</option>
-    </select>
-    
-    <label for="h-resim" class="dosya-yukle-btn">🖼️ Haber Resmi</label>
-    <input type="file" id="h-resim" accept="image/*" style="display: none;" required>
+                    <label for="h-resim" class="dosya-yukle-btn">🖼️ Haber Resmi Seç</label>
+                    <input type="file" id="h-resim" accept="image/*" style="display: none;" required>
 
-    <textarea id="h-icerik" placeholder="Haber içeriği..." rows="5" required></textarea>
-    <button type="submit">Hemen Yayınla</button>
-    <button type="button" onclick="paneliKapat()" style="background: #e74c3c; margin-top: 10px;">Çıkış Yap</button>
-</form> 
-                </div>
+                    <textarea id="h-icerik" placeholder="Haber içeriği..." rows="5" required></textarea>
+                    
+                    <button type="submit">Hemen Yayınla</button>
+                    <button type="button" onclick="paneliKapat()" style="background: #e74c3c; margin-top: 10px;">Çıkış Yap</button>
+                </form>
             </div>
         </aside>
 
@@ -70,10 +63,9 @@
             </main>
     </div>
 
-    <script src="script.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="script.js"></script>
 
-<script src="script.js"></script>
 </body>
 </html>
