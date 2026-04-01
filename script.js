@@ -29,14 +29,13 @@ window.paneliAc = function() {
 // --- 3. YAZAR BİLGİSİNİ SAĞDA GÖSTERME (KRİTİK KISIM) ---
 window.yazarDetayGoster = function(ad, resim) {
     const yazarAlani = document.getElementById('yazar-detay-ic');
-    // Eğer resim yoksa hata vermemesi için boş bir resim linki koyuyoruz
-    const profilResmi = resim || 'https://via.placeholder.com/150'; 
-    
-    yazarAlani.innerHTML = `
-        <img src="${profilResmi}" style="width:140px; height:140px; border-radius:50%; border:4px solid #1a4a8e; object-fit:cover; margin-bottom:15px;">
-        <h3 style="margin:10px 0;">${ad}</h3>
-        <p style="color:#1a4a8e; font-weight:bold;">GENÇ HABER YAZARI</p>
-    `;
+    if (yazarAlani) {
+        yazarAlani.innerHTML = `
+            <img src="${resim || 'default-avatar.png'}" style="width:130px; height:130px; border-radius:50%; border:4px solid #1a4a8e; object-fit:cover; margin-bottom:15px;">
+            <h3 style="margin:10px 0;">${ad}</h3>
+            <p style="color:#1a4a8e; font-weight:bold;">GENÇ HABER YAZARI</p>
+        `;
+    }
 };
 
 // --- 4. HABERLERİ VERİTABANINDAN ÇEKME ---
@@ -49,20 +48,30 @@ function haberleriYukle() {
         const veri = snapshot.val();
         if (!veri) return;
 
-        Object.keys(veri).reverse().forEach(id => {
+        const haberAnahtarlari = Object.keys(veri).reverse();
+        
+        // OTOMATİK YAZAR GÖSTERİMİ: 
+        // Sayfa ilk açıldığında en güncel haberin yazarını sağa gönderir
+        const ilkHaber = veri[haberAnahtarlari[0]];
+        if (ilkHaber) {
+            yazarDetayGoster(ilkHaber.yazar, ilkHaber.yazarResim);
+        }
+
+        haberAnahtarlari.forEach(id => {
             const h = veri[id];
             const kart = document.createElement('article');
             kart.className = 'news-card';
-            kart.dataset.kategori = h.kategori;
             
-            // Habere tıklandığında veya yazar ismine tıklandığında sağ panel güncellenir
+            // Mouse ile haberin üzerine gelindiğinde sağ paneli otomatik günceller
+            kart.onmouseenter = () => yazarDetayGoster(h.yazar, h.yazarResim);
+
             kart.innerHTML = `
                 <button class="delete-btn" onclick="database.ref('haberler/${id}').remove()" style="display:none;">Sil</button>
                 <small style="color:#d32f2f; font-weight:bold;">#${h.kategori}</small>
-                <h3 style="cursor:pointer;" onclick="yazarDetayGoster('${h.yazar}', '${h.yazarResim}')">${h.baslik}</h3>
+                <h3>${h.baslik}</h3>
                 <img src="${h.resim}" style="width:100%; border-radius:10px; margin:15px 0;">
                 <p>${h.icerik}</p>
-                <div class="yazar-satir" onclick="yazarDetayGoster('${h.yazar}', '${h.yazarResim}')" style="cursor:pointer; display:flex; align-items:center; gap:10px; margin-top:10px; color:#1a4a8e; font-weight:bold;">
+                <div style="color:#1a4a8e; font-weight:bold; padding-top:10px; border-top:1px solid #eee;">
                     ✍️ Yazar: ${h.yazar}
                 </div>
             `;
