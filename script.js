@@ -10,6 +10,12 @@ const firebaseConfig = {
   databaseURL: "https://bt-news-ae667-default-rtdb.firebaseio.com"
 };
 
+// Firebase'i başlatıyoruz (Burayı düzelttik!)
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const database = firebase.database();
+
 // --- 2. BÖLÜM: SAYFA YÜKLENDİĞİNDE ÇALIŞANLAR ---
 document.addEventListener('DOMContentLoaded', () => {
     tarihGuncelle();
@@ -23,7 +29,7 @@ function tarihGuncelle() {
     if (el) el.innerText = simdi.toLocaleDateString('tr-TR', secenekler);
 }
 
-// --- 3. BÖLÜM: RESİM KÜÇÜLTME ---
+// --- 3. BÖLÜM: RESİM KÜÇÜLTME (Hız için) ---
 function resmiBoyutlandir(base64Str, maxWidth, maxHeight) {
     return new Promise((resolve) => {
         let img = new Image();
@@ -43,9 +49,11 @@ function resmiBoyutlandir(base64Str, maxWidth, maxHeight) {
 // --- 4. BÖLÜM: BULUTTAN HABERLERİ ÇEKME ---
 function haberleriBuluttanYukle() {
     const liste = document.getElementById('haber-listesi');
-    const isYonetici = document.getElementById('haber-editoru').style.display === 'block';
+    const editorPaneli = document.getElementById('haber-editoru');
+    const isYonetici = editorPaneli && editorPaneli.style.display === 'block';
     
     database.ref('haberler').on('value', (snapshot) => {
+        if (!liste) return;
         liste.innerHTML = '<h2>Son Haberler</h2>';
         const veri = snapshot.val();
         
@@ -60,7 +68,6 @@ function haberleriBuluttanYukle() {
             const kart = document.createElement('article');
             kart.className = 'news-card';
             
-            // Yorumları Listele
             let yorumlarHtml = "";
             if (haber.yorumlar) {
                 const yorumDizisi = Object.entries(haber.yorumlar);
@@ -76,7 +83,7 @@ function haberleriBuluttanYukle() {
                 <div class="news-main-content">
                     <span class="badge">${haber.kategori}</span>
                     <h3 style="margin: 10px 0;">${haber.baslik}</h3>
-                    ${haber.resim ? `<img src="${haber.resim}" alt="Haber">` : ""}
+                    ${haber.resim ? `<img src="${haber.resim}" alt="Haber" style="max-width:100%; border-radius:8px;">` : ""}
                     <p>${haber.icerik}</p>
                     <div class="yorum-bolumu">
                         <div id="yorum-liste-${haber.id}">${yorumlarHtml}</div>
@@ -129,30 +136,36 @@ if (haberFormu) {
 }
 
 // --- 6. BÖLÜM: YORUM VE SİLME ---
-function yorumEkle(haberId) {
+window.yorumEkle = function(haberId) {
     const inp = document.getElementById('inp-' + haberId);
     if (!inp.value.trim()) return;
     database.ref('haberler/' + haberId + '/yorumlar').push(inp.value);
     inp.value = "";
-}
+};
 
-function yorumSil(haberId, yorumId) {
+window.yorumSil = function(haberId, yorumId) {
     if(confirm("Yorum silinsin mi?")) {
         database.ref('haberler/' + haberId + '/yorumlar/' + yorumId).remove();
     }
-}
+};
 
-function haberiSil(id) {
+window.haberiSil = function(id) {
     if(confirm("Haberi tamamen silmek istiyor musunuz?")) {
         database.ref('haberler/' + id).remove();
     }
-}
+};
 
-function paneliAc() {
+window.paneliAc = function() {
     const sifreInp = document.getElementById('admin-sifre');
     if (sifreInp.value === "1234") {
         document.getElementById('admin-giris').style.display = 'none';
         document.getElementById('haber-editoru').style.display = 'block';
         haberleriBuluttanYukle();
     } else { alert("Şifre yanlış!"); }
-}
+};
+
+window.paneliKapat = function() {
+    document.getElementById('admin-giris').style.display = 'block';
+    document.getElementById('haber-editoru').style.display = 'none';
+    haberleriBuluttanYukle();
+};
