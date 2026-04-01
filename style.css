@@ -1,112 +1,81 @@
-/* GENEL TASARIM */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
-    margin: 0;
-    padding: 0;
-    color: #333;
-}
+/* GENEL AYARLAR */
+body { font-family: 'Inter', sans-serif; background-color: #f4f7f6; margin: 0; }
 
-.container {
-    max-width: 1100px;
-    margin: 20px auto;
-    display: flex;
-    gap: 20px;
-    padding: 0 15px;
-}
-
-/* ÜST BİLGİ (HEADER) */
-.main-header {
-    background-color: #1a4a8e;
-    color: white;
-    text-align: center;
-    padding: 40px 20px;
-}
-
-.logo {
-    max-width: 250px;
-    border-radius: 10px;
-    background: white;
-    padding: 10px;
-}
-
-/* YAN PANEL (SIDEBAR) */
-.sidebar {
-    flex: 1;
-}
-
-.sidebar-widget {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-}
-
-/* HABER AKIŞI */
-.news-feed {
-    flex: 3;
-}
-
-.news-card {
-    background: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    margin-bottom: 25px;
-}
-
-/* BUTONLAR VE GİRİŞLER */
-input, textarea, select {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-sizing: border-box;
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    background: #28a745;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-button:hover { background: #218838; }
-
-.dosya-yukle-btn {
-    display: block;
-    padding: 10px;
-    background: #6c757d;
-    color: white;
-    text-align: center;
-    border-radius: 8px;
-    margin: 10px 0;
-    cursor: pointer;
-}
-.container {
-    display: grid;
-    grid-template-columns: 250px 1fr 200px; /* Sol, Orta, Sağ genişlikleri */
-    gap: 20px;
-}
-
+/* KATEGORİ NAVİGASYONU (KIRMIZI VE YAN YANA) */
 .category-nav {
-    background: #f8f9fa;
+    background: #d32f2f; /* Şık bir kırmızı */
+    padding: 10px 0;
     text-align: center;
-    padding: 10px;
-    border-bottom: 2px solid #1a4a8e;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .category-nav button {
-    background: none; color: #1a4a8e; width: auto; margin: 0 10px;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 20px;
+    padding: 8px 20px;
+    margin: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    width: auto; /* Alt alta gelmesini engelleyen kritik yer */
+    transition: 0.3s;
 }
 
-.yazar-kartı {
-    background: white; padding: 15px; border-radius: 12px; text-align: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+.category-nav button:hover {
+    background: white;
+    color: #d32f2f;
+}
+
+/* 3 SÜTUNLU YAPI */
+.container {
+    display: grid;
+    grid-template-columns: 280px 1fr 250px;
+    gap: 25px;
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* HABER KARTLARI VE SİL BUTONU */
+.news-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    position: relative;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ff5252;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+/* YAZAR KARTININ DURUŞU (SAĞ TARAF) */
+.yazar-box {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.yazar-box img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #d32f2f;
 }
