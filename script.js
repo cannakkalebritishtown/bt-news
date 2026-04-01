@@ -29,15 +29,14 @@ window.paneliAc = function() {
 // --- 3. YAZAR BİLGİSİNİ SAĞDA GÖSTERME (KRİTİK KISIM) ---
 window.yazarDetayGoster = function(ad, resim) {
     const yazarAlani = document.getElementById('yazar-detay-ic');
-    if (yazarAlani) {
-        yazarAlani.innerHTML = `
-            <img src="${resim || 'default-avatar.png'}" style="width:130px; height:130px; border-radius:50%; border:4px solid #1a4a8e; object-fit:cover; margin-bottom:15px;">
-            <h3 style="margin:10px 0; color:#333;">${ad}</h3>
-            <p style="color:#1a4a8e; font-weight:bold; letter-spacing:1px;">GENÇ HABER YAZARI</p>
-            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
-            <small style="color:#777;">British Town Haber Merkezi'nin yetenekli kalemlerinden biri.</small>
-        `;
-    }
+    // Eğer resim yoksa hata vermemesi için boş bir resim linki koyuyoruz
+    const profilResmi = resim || 'https://via.placeholder.com/150'; 
+    
+    yazarAlani.innerHTML = `
+        <img src="${profilResmi}" style="width:140px; height:140px; border-radius:50%; border:4px solid #1a4a8e; object-fit:cover; margin-bottom:15px;">
+        <h3 style="margin:10px 0;">${ad}</h3>
+        <p style="color:#1a4a8e; font-weight:bold;">GENÇ HABER YAZARI</p>
+    `;
 };
 
 // --- 4. HABERLERİ VERİTABANINDAN ÇEKME ---
