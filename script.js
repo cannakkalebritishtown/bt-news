@@ -63,21 +63,16 @@ window.kategoriFiltrele = (kat) => {
 // --- 4. ADMİN PANELİ FONKSİYONLARI ---
 window.paneliAc = function() {
     const sifre = document.getElementById('admin-sifre').value;
-    if (sifre === "1234") { // Şifreni buradan değiştirebilirsin
+    if (sifre === "1234") {
         document.getElementById('admin-giris').style.display = 'none';
         document.getElementById('haber-editoru').style.display = 'block';
-        document.querySelectorAll('.delete-btn').forEach(btn => btn.style.display = 'block');
+        // Body'ye admin sınıfı ekleyerek SİL butonlarını görünür yaparız
+        document.body.classList.add('admin-modu'); 
+        alert("Yönetici girişi başarılı. Artık haberleri silebilirsiniz!");
     } else {
         alert("Hatalı şifre!");
     }
 };
-
-window.haberSil = function(id) {
-    if(confirm("Bu haberi silmek istediğine emin misin?")) {
-        database.ref('haberler/' + id).remove();
-    }
-};
-
 // --- 5. RESİM BOYUTLANDIRMA VE FORM GÖNDERME ---
 async function resmiBoyutlandir(file, w, h) {
     if(!file) return "";
@@ -96,7 +91,69 @@ async function resmiBoyutlandir(file, w, h) {
         r.readAsDataURL(file);
     });
 }
+// 2. YORUM GÖNDERME FONKSİYONU
+window.yorumYap = function(haberId) {
+    const yorumInput = document.getElementById(`input-${haberId}`);
+    const yorumMetni = yorumInput.value;
+    
+    if (yorumMetni.trim() !== "") {
+        database.ref(`haberler/${haberId}/yorumlar`).push({
+            metin: yorumMetni,
+            tarih: new Date().toLocaleString('tr-TR')
+        }).then(() => {
+            yorumInput.value = ""; // Kutuyu temizle
+        });
+    }
+};
+// 3. GÜNCELLENMİŞ HABER YÜKLEME (YORUMLAR DAHİL)
+function haberleriYukle() {
+    database.ref('haberler').on('value', (snapshot) => {
+        const liste = document.getElementById('haber-listesi');
+        if (!liste) return;
+        liste.innerHTML = '';
+        const veri = snapshot.val();
+        if (!veri) return;
 
+        Object.keys(veri).reverse().forEach(id => {
+            const h = veri[id];
+            
+            // Yorumları Listeleme
+            let yorumlarHtml = "";
+            if (h.yorumlar) {
+                Object.values(h.yorumlar).forEach(y => {
+                    yorumlarHtml += `<li class="tek-yorum"><b>Misafir:</b> ${y.metin}</li>`;
+                });
+            }
+
+            const grup = document.createElement('div');
+            grup.className = 'haber-grup';
+            grup.innerHTML = `
+                <article class="news-card">
+                    <button class="delete-btn" onclick="haberSil('${id}')" style="display:none;">Sil</button>
+                    <small>#${h.kategori}</small>
+                    <h2>${h.baslik}</h2>
+                    <img src="${h.resim}">
+                    <p>${h.icerik}</p>
+                    
+                    <div class="yorum-bolumu">
+                        <ul class="yorum-liste">${yorumlarHtml}</ul>
+                        <div class="yorum-formu">
+                            <input type="text" id="input-${id}" placeholder="Yorumunuzu yazın...">
+                            <button onclick="yorumYap('${id}')">Gönder</button>
+                        </div>
+                    </div>
+                </article>
+
+                <div class="kart-yazar-paneli">
+                    <img src="${h.yazarResim || 'https://via.placeholder.com/100'}">
+                    <h4>${h.yazar}</h4>
+                    <p style="color:#1a4a8e; font-size:12px; font-weight:bold;">GENÇ YAZAR</p>
+                </div>
+            `;
+            liste.appendChild(grup);
+        });
+    });
+}
 // --- 6. SAYFA BAŞLATICI ---
 document.addEventListener('DOMContentLoaded', () => {
     haberleriYukle();

@@ -155,3 +155,47 @@ body {
     .haber-grup { flex-direction: column; }
     .kart-yazar-paneli { width: 100%; }
 }
+/* YORUM ALANI TASARIMI */
+.yorum-bolumu {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed #ccc;
+}
+
+.yorum-liste {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 15px;
+}
+
+.tek-yorum {
+    background: #f9f9f9;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    border-left: 3px solid #d32f2f; /* Kırmızı detay */
+}
+
+.yorum-formu input {
+    width: 70%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 13px;
+}
+
+.yorum-formu button {
+    width: 25%;
+    padding: 8px;
+    background: #1a4a8e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* SİLME BUTONU GÖRÜNÜRLÜĞÜ */
+.admin-modu .delete-btn {
+    display: block !important;
+}
