@@ -49,5 +49,24 @@ function haberleriYukle() {
 }
 
 document.addEventListener('DOMContentLoaded', haberleriYukle);
+document.addEventListener('DOMContentLoaded', () => {
+    // Tarih Güncelleme
+    const tarihEl = document.getElementById('tarih-saat');
+    if (tarihEl) {
+        const simdi = new Date();
+        tarihEl.innerText = simdi.toLocaleDateString('tr-TR', { 
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+        });
+    }
 
+    // En Çok Okunanlar Listesini Doldurma (Örnek)
+    const okunanlar = document.getElementById('en-cok-okunanlar');
+    if (okunanlar) {
+        okunanlar.innerHTML = `
+            <li>• Yapay Zeka ve Gelecek</li>
+            <li>• Genç Yazarlar Buluşuyor</li>
+            <li>• Okul Gazetemiz Yayında!</li>
+        `;
+    }
+});
 // ... Diğer fonksiyonların (resmiBoyutlandir, paneliAc vb.) buranın altında kalmalı ...

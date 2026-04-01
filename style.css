@@ -49,3 +49,60 @@ body { font-family: 'Inter', sans-serif; margin: 0; background-color: #f4f7f6; }
     border: 3px solid #1a4a8e;
     margin-bottom: 10px;
 }
+/* LOGO ESTETİĞİ */
+.ana-logo {
+    max-width: 350px !important;
+    height: auto;
+    border-radius: 50px; /* Logoyu oval yapan sihirli dokunuş */
+    padding: 10px;
+    background: white; /* Logonun arkasını temiz gösterir */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Hafif derinlik */
+    margin-bottom: 15px;
+}
+
+/* ANA KONTEYNER (Sol Panel Geri Geldi) */
+.container {
+    display: grid;
+    grid-template-columns: 300px 1fr; /* Sol tarafı tekrar görünür kıldık */
+    gap: 30px;
+    max-width: 1450px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* SOL PANEL BİLEŞENLERİ */
+.sidebar-widget {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+}
+
+.sidebar-widget h4 {
+    color: #1a4a8e;
+    border-bottom: 2px solid #d32f2f;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+} 
+
+/* OKUNANLAR LİSTESİ */
+#en-cok-okunanlar {
+    list-style: none;
+    padding: 0;
+}
+
+#en-cok-okunanlar li {
+    padding: 8px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+/* ADMİN GİRİŞİ */
+#admin-giris input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}

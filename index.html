@@ -24,32 +24,26 @@
 <div class="container">
     <aside class="sidebar">
         <div class="sidebar-widget">
-            <h4 id="tarih-saat"></h4>
+            <h4 id="tarih-saat">Tarih Yükleniyor...</h4>
             <p>☁️ Parçalı Bulutlu, 16°C</p>
         </div>
 
+        <div class="sidebar-widget">
+            <h4>🔥 En Çok Okunanlar</h4>
+            <ul id="en-cok-okunanlar">
+                <li>Haberler yükleniyor...</li>
+            </ul>
+        </div>
+
         <div class="sidebar-widget" id="admin-panel">
+            <h4>🔐 Yönetici Girişi</h4>
             <div id="admin-giris">
                 <input type="password" id="admin-sifre" placeholder="Şifre">
-                <button onclick="paneliAc()">Giriş</button>
+                <button onclick="paneliAc()" style="width: 100%; padding: 10px; background: #1a4a8e; color: white; border: none; border-radius: 8px;">Giriş</button>
             </div>
+            
             <div id="haber-editoru" style="display:none;">
-                <form id="haber-formu">
-                    <input type="text" id="h-baslik" placeholder="Başlık" required>
-                    <input type="text" id="h-yazar" placeholder="Yazar Adı" required>
-                    <select id="h-kategori">
-                        <option value="Gündem">Gündem</option>
-                        <option value="Spor">Spor</option>
-                        <option value="Sanat">Sanat</option>
-                    </select>
-                    <label>Haber Resmi:</label>
-                    <input type="file" id="h-resim" required>
-                    <label>Yazar Fotoğrafı:</label>
-                    <input type="file" id="h-yazar-resim">
-                    <textarea id="h-icerik" placeholder="Haber İçeriği..." required></textarea>
-                    <button type="submit">Yayınla</button>
-                </form>
-            </div>
+                </div>
         </div>
     </aside>
 
