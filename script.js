@@ -10,9 +10,6 @@ const firebaseConfig = {
   databaseURL: "https://bt-news-ae667-default-rtdb.firebaseio.com"
 };
 
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
-
 // --- 2. BÖLÜM: SAYFA YÜKLENDİĞİNDE ÇALIŞANLAR ---
 document.addEventListener('DOMContentLoaded', () => {
     tarihGuncelle();
