@@ -1,31 +1,32 @@
-/* GENEL AYARLAR */
+/* 1. GENEL TASARIM */
 body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     background-color: #f4f7f6;
     color: #333;
 }
-/* LOGO BÜYÜTME */
-.logo {
-    max-width: 250px !important; /* Logonu burada daha da büyütebilirsin */
-    height: auto;
-    margin-bottom: 15px;
-}
 
-/* MAVİ ÜST BAŞLIK */
+/* 2. MAVİ ÜST BAŞLIK VE LOGO */
 .main-header {
-    background-color: #1a4a8e !important; /* İstediğin o koyu mavi */
+    background-color: #1a4a8e !important; /* İstediğin koyu mavi */
     color: white;
     text-align: center;
-    padding: 30px 20px;
+    padding: 40px 20px;
 }
 
-/* KIRMIZI KATEGORİ MENÜSÜ */
+.ana-logo {
+    max-width: 350px !important; /* British Town logosunu büyüttük */
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+/* 3. KIRMIZI KATEGORİ MENÜSÜ */
 .category-nav {
-    background-color: #d32f2f; /* Canlı kırmızı şerit */
+    background-color: #d32f2f !important; /* Canlı kırmızı şerit */
     display: flex;
     justify-content: center;
-    padding: 10px 0;
+    padding: 12px 0;
     gap: 15px;
     position: sticky;
     top: 0;
@@ -33,84 +34,102 @@ body {
 }
 
 .category-nav button {
-    background: transparent;
-    border: 2px solid white;
-    color: white;
-    padding: 8px 20px;
-    border-radius: 20px;
+    background: white;
+    border: none;
+    color: #d32f2f;
+    padding: 10px 25px;
+    border-radius: 25px;
     cursor: pointer;
     font-weight: bold;
     transition: 0.3s;
 }
 
 .category-nav button:hover {
-    background: white;
-    color: #d32f2f;
+    background: #f0f0f0;
+    transform: scale(1.05);
 }
 
-/* ANA KONTEYNER (3 SÜTUNLU DÜZEN) */
+/* 4. ANA DÜZEN (3 SÜTUN) */
 .container {
     display: grid;
-    grid-template-columns: 280px 1fr 280px; /* Sol, Orta, Sağ */
-    gap: 20px;
-    max-width: 1400px;
-    margin: 20px auto;
+    grid-template-columns: 280px 1fr 280px; /* Sol: Admin, Orta: Haber, Sağ: Yazar */
+    gap: 25px;
+    max-width: 1500px;
+    margin: 30px auto;
     padding: 0 20px;
 }
 
-/* SOL PANEL (SIDEBAR) */
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
+/* 5. YAN PANELLER (HAVA DURUMU, ADMİN, YAZAR) */
 .sidebar-widget {
     background: white;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
 }
 
-/* HABER KARTLARI (ORTA ALAN) */
+/* 6. HABER KARTLARI (ORTA ALAN) */
 .news-card {
     background: white;
-    padding: 25px;
-    border-radius: 15px;
-    margin-bottom: 25px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
     position: relative;
 }
 
 .news-card img {
     width: 100%;
-    border-radius: 10px;
-    object-fit: cover;
+    border-radius: 15px;
     margin: 15px 0;
+    object-fit: cover;
 }
 
-/* YAZAR BİLGİSİ (SAĞ PANEL KARTI) */
-.yazar-detay-panel {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+/* 7. YAZAR DETAY (SAĞDAKİ PANEL) */
+#yazar-alani {
     text-align: center;
-    position: sticky;
-    top: 80px; /* Sayfa kaydıkça yazar seni takip eder */
 }
 
 .yazar-detay-panel img {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #1a4a8e;
-    margin-bottom: 10px;
+    border: 4px solid #1a4a8e; /* Mavi çerçeve */
+    margin-bottom: 15px;
 }
-/* MOBİL UYUMLULUK */
-@media (max-width: 900px) {
-    .container { grid-template-columns: 1fr; }
+
+/* 8. ADMİN FORMU VE BUTONLAR */
+#admin-giris input, #haber-formu input, #haber-formu textarea, #haber-formu select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+button {
+    cursor: pointer;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #d32f2f;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* 9. MOBİL GÖRÜNÜM */
+@media (max-width: 1100px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
     .sidebar { order: 2; }
     .news-feed { order: 1; }
 }

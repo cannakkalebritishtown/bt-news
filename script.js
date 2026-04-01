@@ -1,4 +1,4 @@
-// --- 1. FIREBASE AYARLARI ---
+// --- 1. FIREBASE BAĞLANTISI ---
 const firebaseConfig = {
   apiKey: "AIzaSyBndKtgrPBrfkoDOd0cSfHJsf2AnZx-Kyk",
   authDomain: "bt-news-ae667.firebaseapp.com",
@@ -9,61 +9,62 @@ const firebaseConfig = {
   databaseURL: "https://bt-news-ae667-default-rtdb.firebaseio.com"
 };
 
+// Çakışma olmaması için kontrol ederek başlatıyoruz
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// --- 2. YÖNETİCİ GİRİŞİ ---
+// --- 2. YÖNETİCİ PANELİ GİRİŞİ ---
 window.paneliAc = function() {
     const sifre = document.getElementById('admin-sifre').value;
     if (sifre === "1234") {
         document.getElementById('admin-giris').style.display = 'none';
         document.getElementById('haber-editoru').style.display = 'block';
+        // Giriş yapınca silme butonlarını görünür yap
         document.querySelectorAll('.delete-btn').forEach(btn => btn.style.display = 'block');
     } else {
-        alert("Şifre hatalı!");
+        alert("Hatalı şifre!");
     }
 };
 
-// --- 3. HABER SİLME ---
-window.haberSil = function(id) {
-    if(confirm("Bu haberi silmek istediğine emin misin?")) {
-        database.ref('haberler/' + id).remove().then(() => alert("Haber silindi."));
+// --- 3. YAZAR BİLGİSİNİ SAĞDA GÖSTERME (KRİTİK KISIM) ---
+window.yazarDetayGoster = function(ad, resim) {
+    const yazarAlani = document.getElementById('yazar-detay-ic');
+    if (yazarAlani) {
+        yazarAlani.innerHTML = `
+            <img src="${resim || 'default-avatar.png'}" style="width:130px; height:130px; border-radius:50%; border:4px solid #1a4a8e; object-fit:cover; margin-bottom:15px;">
+            <h3 style="margin:10px 0; color:#333;">${ad}</h3>
+            <p style="color:#1a4a8e; font-weight:bold; letter-spacing:1px;">GENÇ HABER YAZARI</p>
+            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+            <small style="color:#777;">British Town Haber Merkezi'nin yetenekli kalemlerinden biri.</small>
+        `;
     }
 };
 
-// --- 4. HABERLERİ YÜKLEME ---
+// --- 4. HABERLERİ VERİTABANINDAN ÇEKME ---
 function haberleriYukle() {
     database.ref('haberler').on('value', (snapshot) => {
         const liste = document.getElementById('haber-listesi');
-        const populer = document.getElementById('populer-liste');
         if (!liste) return;
         
-        liste.innerHTML = '<h2>Son Haberler</h2>';
-        if (populer) populer.innerHTML = '';
-        
+        liste.innerHTML = '<h2 style="margin-bottom:20px;">Son Haberler</h2>';
         const veri = snapshot.val();
         if (!veri) return;
 
         Object.keys(veri).reverse().forEach(id => {
             const h = veri[id];
-            if (populer) populer.innerHTML += `<li>${h.baslik}</li>`;
-
             const kart = document.createElement('article');
             kart.className = 'news-card';
             kart.dataset.kategori = h.kategori;
-            kart.style.position = "relative";
+            
+            // Habere tıklandığında veya yazar ismine tıklandığında sağ panel güncellenir
             kart.innerHTML = `
-                <button class="delete-btn" onclick="haberSil('${id}')" style="display:none; position:absolute; right:15px; top:15px; background:#d32f2f; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer; z-index:10;">Sil</button>
-                <small style="color:#d32f2f; font-weight:bold;">#${h.kategori || 'Genel'}</small>
-                <h3>${h.baslik}</h3>
-                <img src="${h.resim}" style="width:100%; border-radius:10px; margin:10px 0;">
+                <button class="delete-btn" onclick="database.ref('haberler/${id}').remove()" style="display:none;">Sil</button>
+                <small style="color:#d32f2f; font-weight:bold;">#${h.kategori}</small>
+                <h3 style="cursor:pointer;" onclick="yazarDetayGoster('${h.yazar}', '${h.yazarResim}')">${h.baslik}</h3>
+                <img src="${h.resim}" style="width:100%; border-radius:10px; margin:15px 0;">
                 <p>${h.icerik}</p>
-                <div class="yazar-kutu" style="display:flex; align-items:center; gap:12px; margin-top:15px; padding-top:15px; border-top:1px solid #eee;">
-                    <img src="${h.yazarResim || 'default-avatar.png'}" style="width:45px; height:45px; border-radius:50%; object-fit:cover; border:2px solid #1a4a8e;">
-                    <div>
-                        <strong style="display:block; color:#1a4a8e;">${h.yazar}</strong>
-                        <small style="color:#666;">Genç Yazar • ${h.tarih || ''}</small>
-                    </div>
+                <div class="yazar-satir" onclick="yazarDetayGoster('${h.yazar}', '${h.yazarResim}')" style="cursor:pointer; display:flex; align-items:center; gap:10px; margin-top:10px; color:#1a4a8e; font-weight:bold;">
+                    ✍️ Yazar: ${h.yazar}
                 </div>
             `;
             liste.appendChild(kart);
@@ -71,16 +72,24 @@ function haberleriYukle() {
     });
 }
 
-// --- 5. KATEGORİ FİLTRE ---
+// --- 5. KATEGORİ FİLTRELEME ---
 window.kategoriFiltrele = (kat) => {
     document.querySelectorAll('.news-card').forEach(c => {
         c.style.display = (kat === 'Hepsi' || c.dataset.kategori === kat) ? 'block' : 'none';
     });
 };
 
-// --- 6. HABER GÖNDERME ---
+// --- 6. SAYFA YÜKLENDİĞİNDE ÇALIŞACAKLAR ---
 document.addEventListener('DOMContentLoaded', () => {
     haberleriYukle();
+    
+    // Tarih ayarı
+    const tarihEl = document.getElementById('tarih-saat');
+    if (tarihEl) {
+        tarihEl.innerText = new Date().toLocaleDateString('tr-TR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    // Haber Gönderme Formu
     const form = document.getElementById('haber-formu');
     if(form) {
         form.onsubmit = async (e) => {
@@ -89,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.disabled = true; btn.innerText = "Yayınlanıyor...";
 
             const hResim = await resmiBoyutlandir(document.getElementById('h-resim').files[0], 800, 500);
-            const yResim = await resmiBoyutlandir(document.getElementById('h-yazar-resim').files[0], 200, 200);
+            const yResim = await resmiBoyutlandir(document.getElementById('h-yazar-resim').files[0], 250, 250);
             
             database.ref('haberler').push({
                 baslik: document.getElementById('h-baslik').value,
@@ -100,16 +109,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 resim: hResim,
                 tarih: new Date().toLocaleDateString('tr-TR')
             }).then(() => { 
-                alert("Haber Başarıyla Yayınlandı! 🗞️"); 
+                alert("Haber Yayınlandı!"); 
                 form.reset(); 
-                btn.disabled = false; btn.innerText = "Hemen Yayınla";
+                btn.disabled = false; btn.innerText = "Yayınla";
             });
         };
     }
-    const tarihEl = document.getElementById('tarih-saat');
-    if (tarihEl) tarihEl.innerText = new Date().toLocaleDateString('tr-TR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 });
 
+// Resim Boyutlandırma (Firebase kotası için önemli)
 async function resmiBoyutlandir(file, w, h) {
     if(!file) return "";
     return new Promise(res => {
