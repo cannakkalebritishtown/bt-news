@@ -13,38 +13,64 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 // --- 2. HABERLERİ YÜKLEME (OTOMATİK YAZAR PANELİ İLE) ---
+// YORUM GÖNDERME FONKSİYONU
+window.yorumYap = function(haberId) {
+    const input = document.getElementById(`yorum-input-${haberId}`);
+    const mesaj = input.value;
+    
+    if (mesaj.trim() !== "") {
+        database.ref(`haberler/${haberId}/yorumlar`).push({
+            metin: mesaj,
+            tarih: new Date().toLocaleString('tr-TR')
+        }).then(() => {
+            input.value = ""; // Gönderince kutuyu temizle
+        });
+    }
+};
+
+// GÜNCEL HABER YÜKLEME (YORUMLAR DAHİL)
 function haberleriYukle() {
     database.ref('haberler').on('value', (snapshot) => {
         const liste = document.getElementById('haber-listesi');
         if (!liste) return;
-        
         liste.innerHTML = '';
         const veri = snapshot.val();
-        if (!veri) {
-            liste.innerHTML = '<p style="text-align:center; padding:20px;">Henüz haber yayınlanmadı.</p>';
-            return;
-        }
+        if (!veri) return;
 
         Object.keys(veri).reverse().forEach(id => {
             const h = veri[id];
+            
+            // Yorumları HTML olarak hazırla
+            let yorumlarHtml = '';
+            if (h.yorumlar) {
+                Object.values(h.yorumlar).forEach(y => {
+                    yorumlarHtml += `<li class="tek-yorum">${y.metin}</li>`;
+                });
+            }
+
             const grup = document.createElement('div');
             grup.className = 'haber-grup';
-            grup.dataset.kategori = h.kategori; // Filtreleme için
-            
             grup.innerHTML = `
                 <article class="news-card">
                     <button class="delete-btn" onclick="haberSil('${id}')" style="display:none;">Sil</button>
-                    <small style="color:#d32f2f; font-weight:bold;">#${h.kategori}</small>
-                    <h2 style="margin-top:10px;">${h.baslik}</h2>
+                    <small style="color:#d32f2f;">#${h.kategori}</small>
+                    <h2>${h.baslik}</h2>
                     <img src="${h.resim}">
                     <p>${h.icerik}</p>
+
+                    <div class="yorum-konteyner">
+                        <ul class="yorum-liste" id="yorum-liste-${id}">${yorumlarHtml}</ul>
+                        <div class="yorum-formu">
+                            <input type="text" id="yorum-input-${id}" placeholder="Bir yorum yaz...">
+                            <button onclick="yorumYap('${id}')">Gönder</button>
+                        </div>
+                    </div>
                 </article>
 
                 <div class="kart-yazar-paneli">
                     <img src="${h.yazarResim || 'https://via.placeholder.com/100'}">
-                    <h4 style="margin:5px 0;">${h.yazar}</h4>
+                    <h4>${h.yazar}</h4>
                     <p style="color:#1a4a8e; font-size:12px; font-weight:bold;">GENÇ YAZAR</p>
-                    <hr style="border:0; border-top:1px solid #eee; margin:10px 0;">
                     <small style="color:#999; font-size:10px;">${h.tarih || '1 Nisan 2026'}</small>
                 </div>
             `;
@@ -52,7 +78,6 @@ function haberleriYukle() {
         });
     });
 }
-
 // --- 3. KATEGORİ FİLTRELEME ---
 window.kategoriFiltrele = (kat) => {
     document.querySelectorAll('.haber-grup').forEach(grup => {
@@ -90,21 +115,7 @@ async function resmiBoyutlandir(file, w, h) {
         };
         r.readAsDataURL(file);
     });
-}
-// 2. YORUM GÖNDERME FONKSİYONU
-window.yorumYap = function(haberId) {
-    const yorumInput = document.getElementById(`input-${haberId}`);
-    const yorumMetni = yorumInput.value;
-    
-    if (yorumMetni.trim() !== "") {
-        database.ref(`haberler/${haberId}/yorumlar`).push({
-            metin: yorumMetni,
-            tarih: new Date().toLocaleString('tr-TR')
-        }).then(() => {
-            yorumInput.value = ""; // Kutuyu temizle
-        });
-    }
-};
+}   
 // 3. GÜNCELLENMİŞ HABER YÜKLEME (YORUMLAR DAHİL)
 function haberleriYukle() {
     database.ref('haberler').on('value', (snapshot) => {
