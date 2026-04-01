@@ -31,7 +31,9 @@
         <div class="sidebar-widget">
             <h4>🔥 En Çok Okunanlar</h4>
             <ul id="en-cok-okunanlar">
-                <li>Haberler yükleniyor...</li>
+                <li>• Yapay Zeka ve Gelecek</li>
+                <li>• Genç Yazarlar Buluşuyor</li>
+                <li>• Okul Gazetemiz Yayında!</li>
             </ul>
         </div>
 
@@ -39,11 +41,26 @@
             <h4>🔐 Yönetici Girişi</h4>
             <div id="admin-giris">
                 <input type="password" id="admin-sifre" placeholder="Şifre">
-                <button onclick="paneliAc()" style="width: 100%; padding: 10px; background: #1a4a8e; color: white; border: none; border-radius: 8px;">Giriş</button>
+                <button onclick="paneliAc()" style="width: 100%; padding: 10px; background: #1a4a8e; color: white; border: none; border-radius: 8px; cursor: pointer;">Giriş</button>
             </div>
             
             <div id="haber-editoru" style="display:none;">
-                </div>
+                <form id="haber-formu">
+                    <input type="text" id="h-baslik" placeholder="Haber Başlığı" required>
+                    <input type="text" id="h-yazar" placeholder="Yazar Adı" required>
+                    <select id="h-kategori">
+                        <option value="Gündem">Gündem</option>
+                        <option value="Spor">Spor</option>
+                        <option value="Sanat">Sanat</option>
+                    </select>
+                    <label style="font-size: 12px; display: block; margin-top: 10px;">Haber Resmi:</label>
+                    <input type="file" id="h-resim" required>
+                    <label style="font-size: 12px; display: block; margin-top: 10px;">Yazar Resmi:</label>
+                    <input type="file" id="h-yazar-resim">
+                    <textarea id="h-icerik" placeholder="Haber içeriğini buraya yazın..." required style="width: 100%; height: 80px; margin-top: 10px; border-radius: 8px; padding: 5px;"></textarea>
+                    <button type="submit" style="width: 100%; padding: 10px; background: #d32f2f; color: white; border: none; border-radius: 8px; margin-top: 10px; cursor: pointer;">Yayınla</button>
+                </form>
+            </div>
         </div>
     </aside>
 

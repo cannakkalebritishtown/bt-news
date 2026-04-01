@@ -1,3 +1,4 @@
+// --- 1. FIREBASE BAĞLANTISI ---
 const firebaseConfig = {
   apiKey: "AIzaSyBndKtgrPBrfkoDOd0cSfHJsf2AnZx-Kyk",
   authDomain: "bt-news-ae667.firebaseapp.com",
@@ -11,6 +12,7 @@ const firebaseConfig = {
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
+// --- 2. HABERLERİ YÜKLEME (OTOMATİK YAZAR PANELİ İLE) ---
 function haberleriYukle() {
     database.ref('haberler').on('value', (snapshot) => {
         const liste = document.getElementById('haber-listesi');
@@ -18,17 +20,20 @@ function haberleriYukle() {
         
         liste.innerHTML = '';
         const veri = snapshot.val();
-        if (!veri) return;
+        if (!veri) {
+            liste.innerHTML = '<p style="text-align:center; padding:20px;">Henüz haber yayınlanmadı.</p>';
+            return;
+        }
 
         Object.keys(veri).reverse().forEach(id => {
             const h = veri[id];
-            
-            // Haberi ve Yazarı yan yana getiren "Grup" yapısı
             const grup = document.createElement('div');
             grup.className = 'haber-grup';
+            grup.dataset.kategori = h.kategori; // Filtreleme için
             
             grup.innerHTML = `
                 <article class="news-card">
+                    <button class="delete-btn" onclick="haberSil('${id}')" style="display:none;">Sil</button>
                     <small style="color:#d32f2f; font-weight:bold;">#${h.kategori}</small>
                     <h2 style="margin-top:10px;">${h.baslik}</h2>
                     <img src="${h.resim}">
@@ -48,25 +53,86 @@ function haberleriYukle() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', haberleriYukle);
+// --- 3. KATEGORİ FİLTRELEME ---
+window.kategoriFiltrele = (kat) => {
+    document.querySelectorAll('.haber-grup').forEach(grup => {
+        grup.style.display = (kat === 'Hepsi' || grup.dataset.kategori === kat) ? 'flex' : 'none';
+    });
+};
+
+// --- 4. ADMİN PANELİ FONKSİYONLARI ---
+window.paneliAc = function() {
+    const sifre = document.getElementById('admin-sifre').value;
+    if (sifre === "1234") { // Şifreni buradan değiştirebilirsin
+        document.getElementById('admin-giris').style.display = 'none';
+        document.getElementById('haber-editoru').style.display = 'block';
+        document.querySelectorAll('.delete-btn').forEach(btn => btn.style.display = 'block');
+    } else {
+        alert("Hatalı şifre!");
+    }
+};
+
+window.haberSil = function(id) {
+    if(confirm("Bu haberi silmek istediğine emin misin?")) {
+        database.ref('haberler/' + id).remove();
+    }
+};
+
+// --- 5. RESİM BOYUTLANDIRMA VE FORM GÖNDERME ---
+async function resmiBoyutlandir(file, w, h) {
+    if(!file) return "";
+    return new Promise(res => {
+        const r = new FileReader();
+        r.onload = (e) => {
+            const i = new Image();
+            i.onload = () => {
+                const c = document.createElement('canvas');
+                c.width = w; c.height = h;
+                c.getContext('2d').drawImage(i, 0, 0, w, h);
+                res(c.toDataURL('image/jpeg', 0.7));
+            };
+            i.src = e.target.result;
+        };
+        r.readAsDataURL(file);
+    });
+}
+
+// --- 6. SAYFA BAŞLATICI ---
 document.addEventListener('DOMContentLoaded', () => {
+    haberleriYukle();
+
     // Tarih Güncelleme
     const tarihEl = document.getElementById('tarih-saat');
     if (tarihEl) {
-        const simdi = new Date();
-        tarihEl.innerText = simdi.toLocaleDateString('tr-TR', { 
+        tarihEl.innerText = new Date().toLocaleDateString('tr-TR', { 
             weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
         });
     }
 
-    // En Çok Okunanlar Listesini Doldurma (Örnek)
-    const okunanlar = document.getElementById('en-cok-okunanlar');
-    if (okunanlar) {
-        okunanlar.innerHTML = `
-            <li>• Yapay Zeka ve Gelecek</li>
-            <li>• Genç Yazarlar Buluşuyor</li>
-            <li>• Okul Gazetemiz Yayında!</li>
-        `;
+    // Haber Formu Dinleyicisi
+    const form = document.getElementById('haber-formu');
+    if (form) {
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = true; btn.innerText = "Yayınlanıyor...";
+
+            const hResim = await resmiBoyutlandir(document.getElementById('h-resim').files[0], 800, 500);
+            const yResim = await resmiBoyutlandir(document.getElementById('h-yazar-resim').files[0], 250, 250);
+
+            database.ref('haberler').push({
+                baslik: document.getElementById('h-baslik').value,
+                yazar: document.getElementById('h-yazar').value,
+                yazarResim: yResim,
+                kategori: document.getElementById('h-kategori').value,
+                icerik: document.getElementById('h-icerik').value,
+                resim: hResim,
+                tarih: new Date().toLocaleDateString('tr-TR')
+            }).then(() => {
+                alert("Haber başarıyla yayınlandı!");
+                form.reset();
+                btn.disabled = false; btn.innerText = "Yayınla";
+            });
+        };
     }
 });
-// ... Diğer fonksiyonların (resmiBoyutlandir, paneliAc vb.) buranın altında kalmalı ...
