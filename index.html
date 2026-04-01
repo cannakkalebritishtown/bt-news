@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Genç Yazarlar Haber Merkezi</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -19,26 +20,14 @@
     <button onclick="kategoriFiltrele('Spor')">Spor</button>
     <button onclick="kategoriFiltrele('Sanat')">Sanat</button>
 </nav>
-<div class="container">
-    <aside class="sidebar"> ... </aside>
 
-    <main class="news-feed" id="haber-listesi"></main>
-
-    <aside class="sidebar">
-        <div class="sidebar-widget" id="yazar-alani">
-            <h3 style="text-align:center;">✍️ Yazar</h3>
-            <div id="yazar-detay-ic" style="text-align:center;">
-                <p style="color:#777;">Yazarı görmek için habere tıklayın.</p>
-            </div>
-        </div>
-    </aside>
-</div>
 <div class="container">
     <aside class="sidebar">
         <div class="sidebar-widget">
             <h4 id="tarih-saat"></h4>
             <p>☁️ Parçalı Bulutlu, 16°C</p>
         </div>
+
         <div class="sidebar-widget" id="admin-panel">
             <div id="admin-giris">
                 <input type="password" id="admin-sifre" placeholder="Şifre">
@@ -53,25 +42,19 @@
                         <option value="Spor">Spor</option>
                         <option value="Sanat">Sanat</option>
                     </select>
+                    <label>Haber Resmi:</label>
                     <input type="file" id="h-resim" required>
+                    <label>Yazar Fotoğrafı:</label>
                     <input type="file" id="h-yazar-resim">
-                    <textarea id="h-icerik" placeholder="Haber..." required></textarea>
+                    <textarea id="h-icerik" placeholder="Haber İçeriği..." required></textarea>
                     <button type="submit">Yayınla</button>
                 </form>
             </div>
         </div>
     </aside>
 
-    <main class="news-feed" id="haber-listesi"></main>
-
-    <aside class="sidebar">
-        <div class="sidebar-widget" id="yazar-alani" style="text-align: center;">
-            <h3>✍️ Yazar</h3>
-            <div id="yazar-detay-ic">
-                <p style="color:#777;">Habere tıklayınca yazar burada görünecek.</p>
-            </div>
-        </div>
-    </aside>
+    <main class="news-feed" id="haber-listesi">
+        </main>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
