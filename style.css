@@ -53,17 +53,22 @@ body {
     transform: scale(1.05);
 }
 
-/* 4. ANA KONTEYNER DÜZENİ */
+/* 4. ANA KONTEYNER DÜZENİ - DÜZELTİLDİ */
 .container {
-    display: grid;
-    grid-template-columns: 300px 1fr; /* Sol Panel Sabit, Sağ Haberler Akışkan */
-    gap: 30px;
-    max-width: 1450px;
+    display: flex; /* Grid yerine Flex ile daha dengeli yayılım sağlandı */
+    justify-content: center;
+    gap: 25px;
+    max-width: 1550px; /* Ekranı biraz genişlettik */
     margin: 30px auto;
     padding: 0 20px;
 }
 
-/* 5. SOL PANEL (SIDEBAR) BİLEŞENLERİ */
+/* 5. SOL PANEL (SIDEBAR) BİLEŞENLERİ - DÜZELTİLDİ */
+.sidebar {
+    width: 280px; /* Sol panel genişliği sabitlendi */
+    flex-shrink: 0;
+}
+
 .sidebar-widget {
     background: white;
     padding: 20px;
@@ -81,6 +86,12 @@ body {
 
 #en-cok-okunanlar { list-style: none; padding: 0; }
 #en-cok-okunanlar li { padding: 10px 0; font-size: 14px; border-bottom: 1px solid #eee; color: #555; }
+
+/* HABER AKIŞI ALANI - DÜZELTİLDİ */
+.news-feed {
+    flex-grow: 1; /* Orta alanın büyümesini sağlar */
+    max-width: 900px;
+}
 
 /* 1. HABER GRUBU DÜZENİ (Hizalamayı Sabitler) */
 .haber-grup {
@@ -112,6 +123,7 @@ body {
 .kart-yazar-paneli {
     width: 200px; /* Genişliği sabitledik ki kaymasın */
     min-width: 200px;
+    flex-shrink: 0;
     background: white;
     padding: 20px;
     border-radius: 18px;
@@ -153,10 +165,10 @@ body {
 }
 
 /* 8. MOBİL UYUMLULUK */
-@media (max-width: 1000px) {
-    .container { grid-template-columns: 1fr; }
+@media (max-width: 1100px) {
+    .container { flex-direction: column; align-items: center; }
+    .sidebar, .news-feed, .kart-yazar-paneli { width: 100%; }
     .haber-grup { flex-direction: column; }
-    .kart-yazar-paneli { width: 100%; }
 }
 /* 4. YORUM BÖLÜMÜ (Haberin Altında Düzgün Durması İçin) */
 .yorum-bolumu {
