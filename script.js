@@ -103,3 +103,23 @@ window.paneliKapat = () => {
     document.getElementById('admin-giris').style.display = 'block';
     document.getElementById('haber-editoru').style.display = 'none';
 };
+// --- RESİM KÜÇÜLTME FONKSİYONU ---
+function resmiBoyutlandir(base64Str, maxWidth, maxHeight) {
+    return new Promise((resolve) => {
+        let img = new Image();
+        img.src = base64Str;
+        img.onload = () => {
+            let canvas = document.createElement('canvas');
+            let w = img.width;
+            let h = img.height;
+            if (w > h) {
+                if (w > maxWidth) { h *= maxWidth / w; w = maxWidth; }
+            } else {
+                if (h > maxHeight) { w *= maxHeight / h; h = maxHeight; }
+            }
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', 0.7));
+        };
+    });
+}
