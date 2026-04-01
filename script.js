@@ -1,3 +1,4 @@
+// 1. FIREBASE AYARLARI
 const firebaseConfig = {
   apiKey: "AIzaSyBndKtgrPBrfkoDOd0cSfHJsf2AnZx-Kyk",
   authDomain: "bt-news-ae667.firebaseapp.com",
@@ -9,91 +10,96 @@ const firebaseConfig = {
   databaseURL: "https://bt-news-ae667-default-rtdb.firebaseio.com"
 };
 
-// Firebase bağlantısını başlat
+// Firebase Başlatma
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 const database = firebase.database();
 
-// Sayfa yüklendiğinde çalışacaklar
+// 2. SAYFA YÜKLENDİĞİNDE HABERLERİ GETİR
 document.addEventListener('DOMContentLoaded', () => {
-    const simdi = new Date();
-    const el = document.getElementById('tarih-saat');
-    if (el) el.innerText = simdi.toLocaleDateString('tr-TR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    haberleriBuluttanYukle();
+    tarihGuncelle();
+    haberleriYukle();
 });
 
-function haberleriBuluttanYukle() {
+function tarihGuncelle() {
+    const el = document.getElementById('tarih-saat');
+    if (el) el.innerText = new Date().toLocaleDateString('tr-TR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+// 3. HABERLERİ BULUTTAN ÇEKME
+function haberleriYukle() {
     const liste = document.getElementById('haber-listesi');
     database.ref('haberler').on('value', (snapshot) => {
         if (!liste) return;
         liste.innerHTML = '<h2>Son Haberler</h2>';
         const veri = snapshot.val();
         if (!veri) {
-            liste.innerHTML += '<p>Henüz haber yok.</p>';
+            liste.innerHTML += '<p>Henüz haber yayınlanmadı.</p>';
             return;
         }
         Object.keys(veri).reverse().forEach(id => {
-            const haber = veri[id];
+            const h = veri[id];
             const kart = document.createElement('article');
             kart.className = 'news-card';
-            kart.innerHTML = `<h3>${haber.baslik}</h3><p>${haber.icerik}</p>`;
+            kart.innerHTML = `
+                <span class="badge">${h.kategori || 'Genel'}</span>
+                <h3>${h.baslik}</h3>
+                ${h.resim ? `<img src="${h.resim}" style="max-width:100%; border-radius:8px; margin:10px 0;">` : ''}
+                <p>${h.icerik}</p>
+                <hr>
+                <small>Yazar: ${h.yazar} - ${h.tarih}</small>
+            `;
             liste.appendChild(kart);
         });
     });
 }
-// --- 5. BÖLÜM: HABER KAYDETME (Düzeltilmiş) ---
-const haberFormu = document.getElementById('haber-formu');
-if (haberFormu) {
-    haberFormu.addEventListener('submit', async function(e) {
-        e.preventDefault(); // SAYFANIN YENİLENMESİNİ DURDURUR (Çok Önemli!)
 
-        const hDosya = document.getElementById('h-resim').files[0];
-        const yDosya = document.getElementById('h-yazar-resim').files[0];
-
-        // Resim okuma fonksiyonu
-        const dosyaOku = (f) => new Promise(r => { 
-            if(!f) { r(""); return; }
-            const rd = new FileReader(); 
-            rd.onload = () => r(rd.result); 
-            rd.readAsDataURL(f); 
-        });
+// 4. HABER YAYINLAMA (SAYFA YENİLENMESİNİ ENGELLER)
+const form = document.getElementById('haber-formu');
+if (form) {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // İŞTE BU SATIR SAYFANIN YENİLENMESİNİ DURDURUR!
         
-        try {
-            let hRaw = await dosyaOku(hDosya);
-            let yRaw = await dosyaOku(yDosya);
+        const baslik = document.getElementById('h-baslik').value;
+        const yazar = document.getElementById('h-yazar').value;
+        const icerik = document.getElementById('h-icerik').value;
+        const kategori = document.getElementById('h-kategori').value;
+        const dosya = document.getElementById('h-resim').files[0];
 
-            // Resim boyutlandırma (Script'inde bu fonksiyon olmalı)
-            const hKucuk = hRaw ? await resmiBoyutlandir(hRaw, 800, 600) : "";
-            const yKucuk = yRaw ? await resmiBoyutlandir(yRaw, 150, 150) : "";
-
-            const yeniHaber = {
-                baslik: document.getElementById('h-baslik').value,
-                yazar: document.getElementById('h-yazar').value,
-                yazarResim: yKucuk,
-                kategori: document.getElementById('h-kategori').value,
-                icerik: document.getElementById('h-icerik').value,
-                resim: hKucuk,
-                tarih: new Date().toLocaleDateString('tr-TR')
-            };
-
-            // Veriyi Firebase'e itiyoruz
-            await database.ref('haberler').push(yeniHaber);
-            
-            this.reset(); // Formu temizle
-            alert("Haber başarıyla buluta yüklendi! ✨");
-            
-        } catch (hata) {
-            console.error("Yükleme hatası:", hata);
-            alert("Bir hata oluştu: " + hata.message);
+        let resimBase64 = "";
+        if (dosya) {
+            const okuyucu = new FileReader();
+            resimBase64 = await new Promise(resolve => {
+                okuyucu.onload = () => resolve(okuyucu.result);
+                okuyucu.readAsDataURL(dosya);
+            });
         }
+
+        const yeniHaber = {
+            baslik, yazar, icerik, kategori,
+            resim: resimBase64,
+            tarih: new Date().toLocaleDateString('tr-TR')
+        };
+
+        database.ref('haberler').push(yeniHaber)
+            .then(() => {
+                alert("Haber Başarıyla Yayınlandı! ✨");
+                form.reset();
+            })
+            .catch(hata => alert("Hata: " + hata.message));
     });
 }
 
-window.paneliAc = function() {
-    const sifre = document.getElementById('admin-sifre').value;
-    if (sifre === "1234") {
+// 5. PANEL KONTROLLERİ
+window.paneliAc = () => {
+    if (document.getElementById('admin-sifre').value === "1234") {
         document.getElementById('admin-giris').style.display = 'none';
         document.getElementById('haber-editoru').style.display = 'block';
-    } else { alert("Şifre yanlış!"); }
+    } else { alert("Şifre hatalı!"); }
+};
+
+window.paneliKapat = () => {
+    document.getElementById('admin-giris').style.display = 'block';
+    document.getElementById('haber-editoru').style.display = 'none';
 };
