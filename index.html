@@ -66,6 +66,29 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     <script src="script.js"></script>
+<nav class="category-nav">
+    <button onclick="kategoriFiltrele('Hepsi')">Hepsi</button>
+    <button onclick="kategoriFiltrele('Gündem')">Gündem</button>
+    <button onclick="kategoriFiltrele('Spor')">Spor</button>
+    <button onclick="kategoriFiltrele('Sanat')">Sanat</button>
+    <button onclick="kategoriFiltrele('Teknoloji')">Teknoloji</button>
+</nav>
 
+<div class="container">
+    <aside class="sidebar-left">
+        <div id="en-cok-okunanlar" class="sidebar-widget">
+            <h3>🔥 En Çok Okunanlar</h3>
+            <ul id="populer-liste">
+                <li>Haberler yükleniyor...</li>
+            </ul>
+        </div>
+    </aside>
+
+    <main class="news-feed" id="haber-listesi">
+        </main>
+
+    <aside class="sidebar-right" id="yazar-alani">
+        </aside>
+</div>
 </body>
 </html>

@@ -50,6 +50,36 @@ function haberleriYukle() {
         });
     });
 }
+// --- KATEGORİ FİLTRELEME ---
+window.kategoriFiltrele = function(kat) {
+    const tumHaberler = document.querySelectorAll('.news-card');
+    tumHaberler.forEach(haber => {
+        if (kat === 'Hepsi' || haber.dataset.kategori === kat) {
+            haber.style.display = 'block';
+        } else {
+            haber.style.display = 'none';
+        }
+    });
+};
+
+// --- YORUM YAPMA FONKSİYONU ---
+window.yorumYap = function(haberId) {
+    const yorumInput = document.getElementById(`yorum-in-${haberId}`);
+    const yorumText = yorumInput.value;
+    if (yorumText) {
+        database.ref(`haberler/${haberId}/yorumlar`).push({
+            metin: yorumText,
+            tarih: new Date().toLocaleString('tr-TR')
+        }).then(() => {
+            yorumInput.value = "";
+            alert("Yorumun gönderildi!");
+        });
+    }
+};
+
+// Haberleri yüklediğin döngünün içine (kart.innerHTML kısmına) 
+// dataset ve yorum alanını eklemeyi unutma:
+// kart.dataset.kategori = h.kategori;
 
 // --- 4. HABER GÖNDERME ---
 document.addEventListener('submit', async (e) => {
