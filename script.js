@@ -44,38 +44,34 @@ function haberleriYukle() {
         const liste = document.getElementById('haber-listesi');
         if (!liste) return;
         
-        liste.innerHTML = '<h2 style="margin-bottom:20px;">Son Haberler</h2>';
+        liste.innerHTML = '<h2>Haber Akışı</h2>';
         const veri = snapshot.val();
         if (!veri) return;
 
-        const haberAnahtarlari = Object.keys(veri).reverse();
-        
-        // OTOMATİK YAZAR GÖSTERİMİ: 
-        // Sayfa ilk açıldığında en güncel haberin yazarını sağa gönderir
-        const ilkHaber = veri[haberAnahtarlari[0]];
-        if (ilkHaber) {
-            yazarDetayGoster(ilkHaber.yazar, ilkHaber.yazarResim);
-        }
-
-        haberAnahtarlari.forEach(id => {
+        Object.keys(veri).reverse().forEach(id => {
             const h = veri[id];
-            const kart = document.createElement('article');
-            kart.className = 'news-card';
             
-            // Mouse ile haberin üzerine gelindiğinde sağ paneli otomatik günceller
-            kart.onmouseenter = () => yazarDetayGoster(h.yazar, h.yazarResim);
+            // Haberi ve Yazarı bir bütün olarak oluşturuyoruz
+            const grup = document.createElement('div');
+            grup.className = 'haber-grup';
+            
+            grup.innerHTML = `
+                <article class="news-card">
+                    <button class="delete-btn" onclick="database.ref('haberler/${id}').remove()" style="display:none;">Sil</button>
+                    <small style="color:#d32f2f; font-weight:bold;">#${h.kategori}</small>
+                    <h3>${h.baslik}</h3>
+                    <img src="${h.resim}" style="width:100%; border-radius:10px; margin:10px 0;">
+                    <p>${h.icerik}</p>
+                </article>
 
-            kart.innerHTML = `
-                <button class="delete-btn" onclick="database.ref('haberler/${id}').remove()" style="display:none;">Sil</button>
-                <small style="color:#d32f2f; font-weight:bold;">#${h.kategori}</small>
-                <h3>${h.baslik}</h3>
-                <img src="${h.resim}" style="width:100%; border-radius:10px; margin:15px 0;">
-                <p>${h.icerik}</p>
-                <div style="color:#1a4a8e; font-weight:bold; padding-top:10px; border-top:1px solid #eee;">
-                    ✍️ Yazar: ${h.yazar}
-                </div>
+                <aside class="kart-yazar-paneli">
+                    <img src="${h.yazarResim || 'default-avatar.png'}">
+                    <h4 style="margin:5px 0; font-size:14px;">${h.yazar}</h4>
+                    <p style="color:#1a4a8e; font-size:11px; font-weight:bold;">GENÇ YAZAR</p>
+                    <small style="font-size:10px; color:#999;">${h.tarih || ''}</small>
+                </aside>
             `;
-            liste.appendChild(kart);
+            liste.appendChild(grup);
         });
     });
 }
