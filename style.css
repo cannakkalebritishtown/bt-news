@@ -79,3 +79,27 @@ body { font-family: 'Inter', sans-serif; background-color: #f4f7f6; margin: 0; }
     object-fit: cover;
     border: 3px solid #d32f2f;
 }
+/* Kategorilerin etrafına biraz boşluk ve şıklık katalım */
+.category-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; /* Mobilde alt alta düzgün gelmesi için */
+    gap: 15px; /* Butonların arasını açar */
+    padding: 15px 0;
+}
+
+.category-nav button {
+    min-width: 100px;
+    text-transform: uppercase; /* Harfleri büyük yapar, daha profesyonel durur */
+    letter-spacing: 1px;
+}
+
+/* Yan panellerdeki (Hava durumu, Admin) yazıların okunurluğu */
+.sidebar-widget {
+    border: 1px solid #eee;
+}
+
+#admin-sifre {
+    border: 2px solid #d32f2f; /* Şifre kutusunu kırmızı yapalım */
+}

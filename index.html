@@ -30,11 +30,12 @@
                 <h3>🔥 En Çok Okunanlar</h3>
                 <ul id="populer-liste"></ul>
             </div>
-            <div id="admin-panel" class="sidebar-widget">
-                <div id="admin-giris">
-                    <input type="password" id="admin-sifre" placeholder="Şifre">
-                    <button onclick="paneliAc()">Yönetici Girişi</button>
-                </div>
+          <div id="admin-panel" class="sidebar-widget">
+    <div id="admin-giris" style="display: flex; flex-direction: column; gap: 10px;">
+        <input type="password" id="admin-sifre" placeholder="Şifre" style="margin: 0;">
+        <button onclick="paneliAc()" style="width: 100%; padding: 10px;">Yönetici Girişi</button>
+    </div>
+    </div>
                 <div id="haber-editoru" style="display:none;">
                     <form id="haber-formu">
                         <input type="text" id="h-baslik" placeholder="Başlık" required>
