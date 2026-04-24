@@ -12,7 +12,7 @@ const firebaseConfig = {
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// --- YENİ EKLENEN YORUM YAPMA FONKSİYONU (DİĞERLERİNE DOKUNULMADI) ---
+// --- YORUM YAPMA FONKSİYONU ---
 window.yorumYap = function(haberId) {
     const yorumInput = document.getElementById(`input-${haberId}`);
     const yorumMetni = yorumInput.value;
@@ -22,14 +22,14 @@ window.yorumYap = function(haberId) {
             metin: yorumMetni,
             tarih: new Date().toLocaleString('tr-TR')
         }).then(() => {
-            yorumInput.value = ""; // Gönderince kutuyu temizler
+            yorumInput.value = ""; 
         });
     } else {
         alert("Lütfen bir yorum yazın!");
     }
 };
 
-// HABERLERİ YÜKLEME (ID EKLEYEREK)
+// --- HABERLERİ YÜKLEME (GÜNCELLENDİ: YORUMLAR + EN ÇOK OKUNANLAR LİNKİ) ---
 function haberleriYukle() {
     database.ref('haberler').on('value', (snapshot) => {
         const liste = document.getElementById('haber-listesi');
@@ -37,7 +37,7 @@ function haberleriYukle() {
         if (!liste) return;
         
         liste.innerHTML = '';
-        if (popülerListe) popülerListe.innerHTML = ''; // Popüler listeyi de temizle
+        if (popülerListe) popülerListe.innerHTML = ''; 
 
         const veri = snapshot.val();
         if (!veri) return;
@@ -45,7 +45,14 @@ function haberleriYukle() {
         Object.keys(veri).reverse().forEach(id => {
             const h = veri[id];
             
-            // 1. Haberi Ekle (id="haber-${id}" ekledik ki oraya zıplayalım)
+            // Yorumları hazırlama
+            let yorumlarHtml = "";
+            if (h.yorumlar) {
+                Object.values(h.yorumlar).forEach(y => {
+                    yorumlarHtml += `<li class="tek-yorum"><b>Misafir:</b> ${y.metin}</li>`;
+                });
+            }
+
             const grup = document.createElement('div');
             grup.className = 'haber-grup';
             grup.id = `haber-${id}`; 
@@ -57,15 +64,25 @@ function haberleriYukle() {
                     <h2>${h.baslik}</h2>
                     <img src="${h.resim}">
                     <p>${h.icerik}</p>
-                    </article>
+                    
+                    <div class="yorum-bolumu">
+                        <ul class="yorum-liste">${yorumlarHtml}</ul>
+                        <div class="yorum-formu">
+                            <input type="text" id="input-${id}" placeholder="Yorumunuzu yazın...">
+                            <button onclick="yorumYap('${id}')">Gönder</button>
+                        </div>
+                    </div>
+                </article>
+
                 <div class="kart-yazar-paneli">
                     <img src="${h.yazarResim || 'https://via.placeholder.com/100'}">
                     <h4>${h.yazar}</h4>
+                    <p style="color:#1a4a8e; font-size:12px; font-weight:bold;">GENÇ YAZAR</p>
                 </div>
             `;
             liste.appendChild(grup);
 
-            // 2. En Çok Okunanlar Listesine Link Olarak Ekle
+            // En Çok Okunanlar Listesine Link Olarak Ekle
             if (popülerListe) {
                 const li = document.createElement('li');
                 li.innerHTML = `<a href="#haber-${id}" style="text-decoration:none; color:inherit;">• ${h.baslik}</a>`;
@@ -75,7 +92,7 @@ function haberleriYukle() {
     });
 }
 
-// --- DİĞER TÜM FONKSİYONLAR (KATEGORİ, ADMİN, RESİM BOYUTLANDIRMA) AYNI KALDI ---
+// --- DİĞER TÜM FONKSİYONLAR (DEĞİŞMEDİ) ---
 window.kategoriFiltrele = (kat) => {
     document.querySelectorAll('.haber-grup').forEach(grup => {
         grup.style.display = (kat === 'Hepsi' || grup.dataset.kategori === kat) ? 'flex' : 'none';
