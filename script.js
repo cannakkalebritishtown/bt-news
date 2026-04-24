@@ -29,7 +29,14 @@ window.yorumYap = function(haberId) {
     }
 };
 
-// --- HABERLERİ YÜKLEME (GÜNCELLENDİ: YORUMLAR + EN ÇOK OKUNANLAR LİNKİ) ---
+// --- YENİ: YORUM SİLME FONKSİYONU ---
+window.yorumSil = function(haberId, yorumId) {
+    if(confirm("Bu yorumu silmek istediğine emin misin?")) {
+        database.ref(`haberler/${haberId}/yorumlar/${yorumId}`).remove();
+    }
+};
+
+// --- HABERLERİ YÜKLEME (YORUM SİLME BUTONU EKLENDİ) ---
 function haberleriYukle() {
     database.ref('haberler').on('value', (snapshot) => {
         const liste = document.getElementById('haber-listesi');
@@ -45,11 +52,16 @@ function haberleriYukle() {
         Object.keys(veri).reverse().forEach(id => {
             const h = veri[id];
             
-            // Yorumları hazırlama
+            // Yorumları hazırlama (SİLME BUTONU İLE)
             let yorumlarHtml = "";
             if (h.yorumlar) {
-                Object.values(h.yorumlar).forEach(y => {
-                    yorumlarHtml += `<li class="tek-yorum"><b>Misafir:</b> ${y.metin}</li>`;
+                Object.keys(h.yorumlar).forEach(yId => {
+                    const y = h.yorumlar[yId];
+                    yorumlarHtml += `
+                        <li class="tek-yorum">
+                            <b>Misafir:</b> ${y.metin}
+                            <button class="delete-btn" onclick="yorumSil('${id}', '${yId}')" style="font-size:9px; padding:2px 5px; margin-left:10px;">Yorumu Sil</button>
+                        </li>`;
                 });
             }
 
@@ -59,7 +71,7 @@ function haberleriYukle() {
             
             grup.innerHTML = `
                 <article class="news-card">
-                    <button class="delete-btn" onclick="haberSil('${id}')">Sil</button>
+                    <button class="delete-btn" onclick="haberSil('${id}')">Haberi Sil</button>
                     <small>#${h.kategori}</small>
                     <h2>${h.baslik}</h2>
                     <img src="${h.resim}">
@@ -82,7 +94,6 @@ function haberleriYukle() {
             `;
             liste.appendChild(grup);
 
-            // En Çok Okunanlar Listesine Link Olarak Ekle
             if (popülerListe) {
                 const li = document.createElement('li');
                 li.innerHTML = `<a href="#haber-${id}" style="text-decoration:none; color:inherit;">• ${h.baslik}</a>`;
