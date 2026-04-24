@@ -146,3 +146,21 @@ body { font-family: 'Inter', sans-serif; margin: 0; background-color: #f4f7f6; }
         width: 100%;
     }
 }
+#en-cok-okunanlar li {
+    padding: 10px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    color: #555;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+#en-cok-okunanlar li:hover {
+    color: #d32f2f; /* Kırmızıya döner */
+    padding-left: 5px; /* Hafif sağa kayar */
+}
+
+/* Sayfa içinde yumuşak kayma efekti */
+html {
+    scroll-behavior: smooth;
+}

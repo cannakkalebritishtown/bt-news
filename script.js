@@ -29,54 +29,48 @@ window.yorumYap = function(haberId) {
     }
 };
 
-// --- 2. HABERLERİ YÜKLEME (SENİN KODUN - DEĞİŞTİRİLMEDİ) ---
+// HABERLERİ YÜKLEME (ID EKLEYEREK)
 function haberleriYukle() {
     database.ref('haberler').on('value', (snapshot) => {
         const liste = document.getElementById('haber-listesi');
+        const popülerListe = document.getElementById('en-cok-okunanlar');
         if (!liste) return;
+        
         liste.innerHTML = '';
+        if (popülerListe) popülerListe.innerHTML = ''; // Popüler listeyi de temizle
+
         const veri = snapshot.val();
         if (!veri) return;
 
         Object.keys(veri).reverse().forEach(id => {
             const h = veri[id];
             
-            // Yorumları Listeleme
-            let yorumlarHtml = "";
-            if (h.yorumlar) {
-                Object.values(h.yorumlar).forEach(y => {
-                    yorumlarHtml += `<li class="tek-yorum"><b>Misafir:</b> ${y.metin}</li>`;
-                });
-            }
-
+            // 1. Haberi Ekle (id="haber-${id}" ekledik ki oraya zıplayalım)
             const grup = document.createElement('div');
             grup.className = 'haber-grup';
-            grup.dataset.kategori = h.kategori;
+            grup.id = `haber-${id}`; 
             
             grup.innerHTML = `
                 <article class="news-card">
-                    <button class="delete-btn" onclick="haberSil('${id}')" style="display:none;">Sil</button>
+                    <button class="delete-btn" onclick="haberSil('${id}')">Sil</button>
                     <small>#${h.kategori}</small>
                     <h2>${h.baslik}</h2>
                     <img src="${h.resim}">
                     <p>${h.icerik}</p>
-                    
-                    <div class="yorum-bolumu">
-                        <ul class="yorum-liste">${yorumlarHtml}</ul>
-                        <div class="yorum-formu">
-                            <input type="text" id="input-${id}" placeholder="Yorumunuzu yazın...">
-                            <button onclick="yorumYap('${id}')">Gönder</button>
-                        </div>
-                    </div>
-                </article>
-
+                    </article>
                 <div class="kart-yazar-paneli">
                     <img src="${h.yazarResim || 'https://via.placeholder.com/100'}">
                     <h4>${h.yazar}</h4>
-                    <p style="color:#1a4a8e; font-size:12px; font-weight:bold;">GENÇ YAZAR</p>
                 </div>
             `;
             liste.appendChild(grup);
+
+            // 2. En Çok Okunanlar Listesine Link Olarak Ekle
+            if (popülerListe) {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="#haber-${id}" style="text-decoration:none; color:inherit;">• ${h.baslik}</a>`;
+                popülerListe.appendChild(li);
+            }
         });
     });
 }
