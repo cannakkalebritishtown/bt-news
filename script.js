@@ -103,7 +103,7 @@ function haberleriYukle() {
     });
 }
 
-// --- DİĞER TÜM FONKSİYONLAR (DEĞİŞMEDİ) ---
+// --- DİĞER TÜM FONKSİYONLAR ---
 window.kategoriFiltrele = (kat) => {
     document.querySelectorAll('.haber-grup').forEach(grup => {
         grup.style.display = (kat === 'Hepsi' || grup.dataset.kategori === kat) ? 'flex' : 'none';
@@ -179,25 +179,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 });
-window.adminPaneliniGoster = function() {
+
+// --- YENİ EKLENEN PENCERE KONTROLLERİ (BURAYI EKLEDİM) ---
+window.adminPaneliniGoster = () => {
     document.getElementById('admin-modal').style.display = 'block';
 };
 
-window.adminPaneliniKapat = function() {
+window.adminPaneliniKapat = () => {
     document.getElementById('admin-modal').style.display = 'none';
-};
-
-// Şifre doğruysa pencereyi açık tut, yanlışsa uyarı ver (Mevcut paneliAc fonksiyonunu buna göre güncelle)
-const eskiPaneliAc = window.paneliAc;
-window.paneliAc = function() {
-    const sifre = document.getElementById('admin-sifre').value;
-    if (sifre === "1234") {
-        document.getElementById('admin-giris').style.display = 'none';
-        document.getElementById('haber-editoru').style.display = 'block';
-        document.body.classList.add('admin-modu');
-        // Pencereyi genişlet ki form sığsın
-        document.querySelector('.modal-icerik').style.width = "500px";
-    } else {
-        alert("Hatalı şifre!");
-    }
 };

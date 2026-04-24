@@ -7,7 +7,42 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="admin-gizli-giris" onclick="adminPaneliniGoster()" style="position: fixed; top: 20px; left: 20px; z-index: 9999; cursor: pointer; font-size: 24px; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">🔒</div>
+
+<div class="admin-gizli-giris" onclick="adminPaneliniGoster()">
+    <span>🔒</span>
+</div>
+
+<div id="admin-modal" class="modal-arkaplan">
+    <div class="modal-icerik">
+        <span class="kapat-buton" onclick="adminPaneliniKapat()">&times;</span>
+        
+        <div id="admin-giris">
+            <h4>🔐 Yönetici Girişi</h4>
+            <input type="password" id="admin-sifre" placeholder="Şifre">
+            <button onclick="paneliAc()" style="width: 100%; padding: 10px; background: #1a4a8e; color: white; border: none; border-radius: 8px; cursor: pointer;">Giriş Yap</button>
+        </div>
+        
+        <div id="haber-editoru" style="display:none;">
+            <h4>📰 Yeni Haber Yayınla</h4>
+            <form id="haber-formu">
+                <input type="text" id="h-baslik" placeholder="Haber Başlığı" required>
+                <input type="text" id="h-yazar" placeholder="Yazar Adı" required>
+                <select id="h-kategori">
+                    <option value="Gündem">Gündem</option>
+                    <option value="Spor">Spor</option>
+                    <option value="Sanat">Sanat</option>
+                </select>
+                <label style="font-size: 12px; display: block; margin-top: 10px;">Haber Resmi:</label>
+                <input type="file" id="h-resim" required>
+                <label style="font-size: 12px; display: block; margin-top: 10px;">Yazar Resmi:</label>
+                <input type="file" id="h-yazar-resim">
+                <textarea id="h-icerik" placeholder="Haber içeriği..." required style="width: 100%; height: 100px; margin-top: 10px; border-radius: 8px; padding: 10px; border: 1px solid #ddd;"></textarea>
+                <button type="submit" style="width: 100%; padding: 10px; background: #d32f2f; color: white; border: none; border-radius: 8px; margin-top: 10px; cursor: pointer;">Yayınla</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <header class="main-header">
     <img src="okul-logo-png.jpeg" alt="British Town Logo" class="ana-logo">
     <h1>Genç Yazarlar Haber Merkezi</h1>
@@ -30,17 +65,12 @@
 
         <div class="sidebar-widget">
             <h4>🔥 En Çok Okunanlar</h4>
-          <ul id="en-cok-okunanlar">
-    </ul>
+            <ul id="en-cok-okunanlar"></ul>
         </div>
+    </aside>
 
-   <div class="admin-gizli-giris" onclick="adminPaneliniGoster()">
-    <span style="cursor: pointer; font-size: 20px;">🔒</span>
-</div>
-        
-        <div id="haber-editoru" style="display:none;">
-            </div>
-    </div>
+    <main class="news-feed" id="haber-listesi">
+        </main>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
