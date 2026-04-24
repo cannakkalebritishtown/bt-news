@@ -164,3 +164,42 @@ body { font-family: 'Inter', sans-serif; margin: 0; background-color: #f4f7f6; }
 html {
     scroll-behavior: smooth;
 }
+/* Sol Üstteki Simge */
+.admin-gizli-giris {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 2000;
+    background: rgba(26, 74, 142, 0.1);
+    padding: 8px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+.admin-gizli-giris:hover { background: rgba(26, 74, 142, 0.8); }
+
+/* Giriş Penceresi (Modal) */
+.modal-arkaplan {
+    display: none; 
+    position: fixed;
+    z-index: 3000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+}
+
+.modal-icerik {
+    background-color: white;
+    margin: 10% auto;
+    padding: 25px;
+    border-radius: 20px;
+    width: 350px;
+    position: relative;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+}
+
+.kapat-buton {
+    position: absolute;
+    right: 20px; top: 15px;
+    font-size: 28px; cursor: pointer;
+}

@@ -34,32 +34,22 @@
     </ul>
         </div>
 
-        <div class="sidebar-widget" id="admin-panel">
-            <h4>🔐 Yönetici Girişi</h4>
-            <div id="admin-giris">
-                <input type="password" id="admin-sifre" placeholder="Şifre">
-                <button onclick="paneliAc()" style="width: 100%; padding: 10px; background: #1a4a8e; color: white; border: none; border-radius: 8px; cursor: pointer;">Giriş</button>
-            </div>
-            
-            <div id="haber-editoru" style="display:none;">
-                <form id="haber-formu">
-                    <input type="text" id="h-baslik" placeholder="Haber Başlığı" required>
-                    <input type="text" id="h-yazar" placeholder="Yazar Adı" required>
-                    <select id="h-kategori">
-                        <option value="Gündem">Gündem</option>
-                        <option value="Spor">Spor</option>
-                        <option value="Sanat">Sanat</option>
-                    </select>
-                    <label style="font-size: 11px; display: block; margin-top: 5px;">Haber/Yazar Resimleri:</label>
-                    <input type="file" id="h-resim" required>
-                    <input type="file" id="h-yazar-resim">
-                    <textarea id="h-icerik" placeholder="Haber içeriği..." required></textarea>
-                    <button type="submit">Yayınla</button>
-                </form>
-            </div>
+   <div class="admin-gizli-giris" onclick="adminPaneliniGoster()">
+    <span style="cursor: pointer; font-size: 20px;">🔒</span>
+</div>
+
+<div id="admin-modal" class="modal-arkaplan">
+    <div class="modal-icerik">
+        <span class="kapat-buton" onclick="adminPaneliniKapat()">&times;</span>
+        <h4>🔐 Yönetici Girişi</h4>
+        <div id="admin-giris">
+            <input type="password" id="admin-sifre" placeholder="Şifre">
+            <button onclick="paneliAc()">Giriş Yap</button>
         </div>
-    </aside> <main class="news-feed" id="haber-listesi">
-        </main>
+        
+        <div id="haber-editoru" style="display:none;">
+            </div>
+    </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
