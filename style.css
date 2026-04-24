@@ -203,3 +203,6 @@ html {
     right: 20px; top: 15px;
     font-size: 28px; cursor: pointer;
 }
+#admin-panel {
+    display: none !important; /* Eski kutuyu her türlü gizle */
+}

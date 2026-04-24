@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+<div class="admin-gizli-giris" onclick="adminPaneliniGoster()" style="position: fixed; top: 20px; left: 20px; z-index: 9999; cursor: pointer; font-size: 24px; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">🔒</div>
 <header class="main-header">
     <img src="okul-logo-png.jpeg" alt="British Town Logo" class="ana-logo">
     <h1>Genç Yazarlar Haber Merkezi</h1>
@@ -37,15 +37,6 @@
    <div class="admin-gizli-giris" onclick="adminPaneliniGoster()">
     <span style="cursor: pointer; font-size: 20px;">🔒</span>
 </div>
-
-<div id="admin-modal" class="modal-arkaplan">
-    <div class="modal-icerik">
-        <span class="kapat-buton" onclick="adminPaneliniKapat()">&times;</span>
-        <h4>🔐 Yönetici Girişi</h4>
-        <div id="admin-giris">
-            <input type="password" id="admin-sifre" placeholder="Şifre">
-            <button onclick="paneliAc()">Giriş Yap</button>
-        </div>
         
         <div id="haber-editoru" style="display:none;">
             </div>
