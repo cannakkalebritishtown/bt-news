@@ -76,3 +76,73 @@ body { font-family: 'Inter', sans-serif; margin: 0; background-color: #f4f7f6; }
 .admin-modu .delete-btn {
     display: block !important;
 }
+/* --- MOBİL UYUMLULUK (TELEFON VE TABLET İÇİN) --- */
+@media (max-width: 768px) {
+    /* 1. Ana Konteyneri Dikey Yap */
+    .container {
+        flex-direction: column; /* Yan yana olan her şeyi alt alta diz */
+        padding: 10px;
+        gap: 15px;
+    }
+
+    /* 2. Sol Paneli (Sidebar) ve Haberi Tam Genişlik Yap */
+    .sidebar, .news-feed {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* 3. Haber Grubu İçindeki Yazar ve Kartı Alt Alta Al */
+    .haber-grup {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* 4. Haber Kartını ve Yazar Panelini Genişlet */
+    .news-card, .kart-yazar-paneli {
+        width: 100% !important;
+        box-sizing: border-box; /* Kenar boşluklarını içeri dahil et */
+    }
+
+    /* 5. Yazar Panelini Telefonda Daha Kibar Yap */
+    .kart-yazar-paneli {
+        border-top: none;
+        border-left: 5px solid #1a4a8e; /* Mavi çizgiyi sola alalım */
+        display: flex;
+        align-items: center;
+        text-align: left;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .kart-yazar-paneli img {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 0;
+    }
+
+    /* 6. Logo ve Başlığı Küçült */
+    .ana-logo {
+        max-width: 180px !important;
+    }
+
+    .main-header h1 {
+        font-size: 20px;
+    }
+
+    /* 7. Kategori Menüsünü Kaydırılabilir Yap (Butonlar sıkışmasın) */
+    .category-nav {
+        overflow-x: auto; /* Yanlamasına kaydırılabilir */
+        justify-content: flex-start;
+        padding: 10px 20px;
+        white-space: nowrap; /* Butonların alt satıra geçmesini engelle */
+    }
+
+    /* 8. Yorum Formunu Alt Alta Al (Dar ekranlar için) */
+    .yorum-formu {
+        flex-direction: column;
+    }
+    
+    .yorum-formu button {
+        width: 100%;
+    }
+}
