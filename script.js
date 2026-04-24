@@ -52,15 +52,15 @@ function haberleriYukle() {
         Object.keys(veri).reverse().forEach(id => {
             const h = veri[id];
             
-            // Yorumları hazırlama (SİLME BUTONU İLE)
+            // Yorumları hazırlama
             let yorumlarHtml = "";
             if (h.yorumlar) {
                 Object.keys(h.yorumlar).forEach(yId => {
                     const y = h.yorumlar[yId];
                     yorumlarHtml += `
-                        <li class="tek-yorum">
-                            <b>Misafir:</b> ${y.metin}
-                            <button class="delete-btn" onclick="yorumSil('${id}', '${yId}')" style="font-size:9px; padding:2px 5px; margin-left:10px;">Yorumu Sil</button>
+                        <li class="tek-yorum" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                            <span><b>Misafir:</b> ${y.metin}</span>
+                            <button class="delete-btn" onclick="yorumSil('${id}', '${yId}')" style="background:#d32f2f; color:white; border:none; border-radius:4px; padding:2px 8px; cursor:pointer; font-size:10px;">Sil</button>
                         </li>`;
                 });
             }
@@ -70,15 +70,15 @@ function haberleriYukle() {
             grup.id = `haber-${id}`; 
             
             grup.innerHTML = `
-                <article class="news-card">
-                    <button class="delete-btn" onclick="haberSil('${id}')">Haberi Sil</button>
+                <article class="news-card" style="position: relative;">
+                    <button class="delete-btn" onclick="haberSil('${id}')" style="position: absolute; top: 10px; right: 10px;">Haberi Sil</button>
                     <small>#${h.kategori}</small>
                     <h2>${h.baslik}</h2>
                     <img src="${h.resim}">
                     <p>${h.icerik}</p>
                     
                     <div class="yorum-bolumu">
-                        <ul class="yorum-liste">${yorumlarHtml}</ul>
+                        <ul class="yorum-liste" style="list-style: none; padding: 0;">${yorumlarHtml}</ul>
                         <div class="yorum-formu">
                             <input type="text" id="input-${id}" placeholder="Yorumunuzu yazın...">
                             <button onclick="yorumYap('${id}')">Gönder</button>
